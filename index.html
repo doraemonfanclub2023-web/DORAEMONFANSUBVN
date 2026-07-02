@@ -2,155 +2,133 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
-    <title>Trang Web Của Tôi</title>
-    
-    <!-- Font Awesome Icons -->
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css' rel='stylesheet'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện Web Style Oxxo</title>
+    <!-- Nhúng Font chữ giống trong code của bạn -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@400;700&family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Nhúng FontAwesome để làm icon tìm kiếm, icon mạng xã hội -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
 
-    <!-- Google Fonts & Toàn bộ CSS từ Template gốc của bạn -->
     <style>
-        /*-- Google Fonts CSS --*/
-        @font-face{font-family:'Lexend Exa';font-style:normal;font-weight:300;font-display:swap;src:url(https://fonts.gstatic.com/s/lexendexa/v30/UMBXrPdOoHOnxExyjdBeaiLdA4M5.woff2) format("woff2");unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
-        @font-face{font-family:'Lexend Exa';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/lexendexa/v30/UMBXrPdOoHOnxExyjdBeai3dAw.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-        @font-face{font-family:'Prompt';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/prompt/v10/-W__XJnvUD7dzB2KYNod.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-
-        /* Thay thế các biến của Blogger sang màu sắc cụ thể */
-        :root {
-            --body-bg-color: #74b9ff;
-            --body-text-color: #656565;
-            --body-link-color: #fbc02d;
-            --menu-bg: #ffffff;
-            --menu-color: #000000;
-            --menu-hover: #fbc02d;
-            --feat-color: #000000;
-            --feat-button-bg: #000000;
-            --feat-button-color: #ffffff;
-        }
-
-        /*-- Reset CSS --*/
-        a,abbr,acronym,address,applet,b,big,blockquote,body,caption,center,cite,code,dd,del,dfn,div,dl,dt,em,fieldset,font,form,h1,h2,h3,h4,h5,h6,html,i,iframe,img,ins,kbd,label,legend,li,object,p,pre,q,s,samp,small,span,strike,strong,sub,sup,table,tbody,td,tfoot,th,thead,tr,tt,u,ul,var{
-            padding:0; border:0; outline:0; vertical-align:baseline; background:0 0; text-decoration:none
-        }
-        * { box-sizing: border-box; }
-        body{
-            background-color: var(--body-bg-color);
+        /* Định hình cấu trúc màu sắc và font chữ nền */
+        body {
+            background-color: #74b9ff; /* Màu nền xanh pastel */
             font-family: 'Prompt', sans-serif;
-            font-size:14px; font-weight:400; color: var(--body-text-color); margin:0; padding:0
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Lexend Exa', sans-serif; font-weight: 400; color: #000; }
-        a { color: var(--body-link-color); }
 
-        /*-- Layout CSS --*/
-        .container { width: 100%; max-width: 1170px; margin: 0 auto; padding: 0 15px; }
-        
-        /* Header & Menu */
-        .header-header { text-align: center; padding: 40px 0; }
-        .header-logo h1 { font-size: 32px; margin: 0; text-transform: uppercase; }
-        
-        .header-menu { height: 80px; margin-bottom: 30px; }
-        .header-menu .block-sign {
-            display: flex; align-items: center; justify-content: space-between;
-            background: var(--menu-bg); border-radius: 40px; border: 2px solid #000; box-shadow: 0 3px 0 0 #000; padding: 0 20px;
+        /* Phần Header Logo */
+        .header-wrap {
+            text-align: center;
+            padding: 40px 0;
         }
-        #main-menu-nav { display: flex; padding: 0; margin: 0; }
-        #main-menu-nav li { list-style: none; position: relative; }
-        #main-menu-nav li a {
-            color: var(--menu-color); font-weight: 700; line-height: 76px; display: inline-block; padding: 0 20px; text-transform: uppercase; transition: color .17s;
+        .header-logo h1 {
+            font-family: 'Lexend Exa', sans-serif;
+            color: #000000;
+            margin: 0;
+            font-size: 28px;
+            text-transform: uppercase;
         }
-        #main-menu-nav li:hover > a { color: var(--menu-hover); }
 
-        /* Main Content Grid */
-        .flex-content { display: flex; gap: 30px; margin-top: 30px; }
-        #main-wrapper { flex: 3; }
-        #sidebar-wrapper { flex: 1; }
+        /* Thanh Menu chính thiết kế bo tròn viền đen đổ bóng */
+        .header-menu {
+            max-width: 1170px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .block-sign {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 40px;
+            box-shadow: 0 3px 0 0 #000000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+            padding: 0 20px;
+        }
 
-        /* Featured Post Block */
-        .post {  
-            background: #ffffff; border-radius: 40px; border: 2px solid #000; box-shadow: 0 3px 0 0 #000; overflow: hidden; margin-bottom: 30px;
+        /* Danh sách Menu điều hướng */
+        .main-menu-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
         }
-        .post-image-link { display: block; width: 100%; height: 350px; background: #edcbaf; position: relative; overflow: hidden; }
-        .post-image-link img { width: 100%; height: 100%; object-fit: cover; }
-        .post-info { padding: 40px; text-align: center; }
-        .post-info .post-title { font-size: 28px; font-weight: 600; margin: 0 0 15px; }
-        .post-info .post-title a { color: var(--feat-color); }
-        .post-info .post-snippet { line-height: 1.6em; font-size: 16px; margin-bottom: 20px; }
-        .jump-link a {   
-            display: inline-block; height: 40px; line-height: 40px; padding: 0 30px; background-color: var(--feat-button-bg); font-size: 14px; color: var(--feat-button-color); font-weight: 500; border-radius: 20px; transition: 0.2s;
+        .main-menu-nav li a {
+            color: #000000;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0 15px;
+            line-height: 80px;
+            display: block;
+            transition: color 0.2s;
         }
-        .jump-link a:hover { opacity: 0.8; }
+        .main-menu-nav li a:hover {
+            color: #fbc02d; /* Màu vàng khi di chuột vào */
+        }
 
-        /* Sidebar Widget */
-        .sidebar-widget {
-            background: #fff; border-radius: 20px; border: 2px solid #000; box-shadow: 0 3px 0 0 #000; padding: 20px; margin-bottom: 20px;
+        /* Nút tìm kiếm bên phải menu */
+        .search-box {
+            color: #000000;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 10px;
         }
-        .sidebar-widget h3 { font-size: 18px; font-weight: 600; margin-top: 0; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .search-box:hover {
+            color: #fbc02d;
+        }
+
+        /* Khu vực nội dung hiển thị chính bên dưới */
+        .content-wrapper {
+            max-width: 1170px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+        .main-post {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 40px;
+            box-shadow: 0 3px 0 0 #000000;
+            padding: 30px;
+            min-height: 200px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header Logo -->
-    <header class="header-header">
-        <div class="container">
-            <div class="header-logo">
-                <h1>Oxxo Template</h1>
-                <p>Giao diện cá nhân hóa chạy trực tiếp trên trình duyệt</p>
+    <!-- Khối Header chứa Tên Web -->
+    <div class="header-wrap">
+        <div class="header-logo">
+            <h1>TÊN WEB CỦA BẠN</h1>
+        </div>
+    </div>
+
+    <!-- Khối Menu bo tròn đổ bóng đặc trưng giống mẫu -->
+    <div class="header-menu">
+        <div class="block-sign">
+            <ul class="main-menu-nav">
+                <li><a href="#"><i class="fa fa-home"></i> Trang Chủ</a></li>
+                <li><a href="#">Bài Viết</a></li>
+                <li><a href="#">Tính Năng</a></li>
+                <li><a href="#">Liên Hệ</a></li>
+            </ul>
+            <div class="search-box">
+                <i class="fa fa-search"></i>
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- Navigation Menu -->
-    <nav class="header-menu">
-        <div class="container">
-            <div class="block-sign">
-                <ul id="main-menu-nav">
-                    <li><a href="#"><i class="fa-solid fa-house"></i> Trang chủ</a></li>
-                    <li><a href="#">Bài viết</a></li>
-                    <li><a href="#">Hình ảnh</a></li>
-                    <li><a href="#">Liên hệ</a></li>
-                </ul>
-                <div style="padding-right: 15px; cursor: pointer;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </div>
-            </div>
+    <!-- Khối Nội Dung Chính -->
+    <div class="content-wrapper">
+        <div class="main-post">
+            <h2>Chào mừng bạn đến với Website!</h2>
+            <p>Đây là phần nội dung trang web được thiết kế mô phỏng theo cấu trúc và màu sắc từ giao diện Oxxo bạn đã cung cấp.</p>
         </div>
-    </nav>
-
-    <!-- Main Content Area -->
-    <main class="container">
-        <div class="flex-content">
-            
-            <!-- Cột nội dung chính bên trái -->
-            <div id="main-wrapper">
-                <article class="post">
-                    <div class="post-image-link">
-                        <!-- Ảnh minh họa tạm thời -->
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200" alt="Featured Image">
-                    </div>
-                    <div class="post-info">
-                        <h2 class="post-title"><a href="#">Chào mừng bạn đến với trang web mới làm sạch từ mã Blogger!</a></h2>
-                        <p class="post-snippet">Mã nguồn của bạn ban đầu chứa các thẻ biến dạng dữ liệu `<b:if>`, `<b:skin>` của Google Blogger. Tôi đã chuyển đổi toàn bộ các biến số này thành CSS chuẩn hóa giúp trang web có thể hiển thị mượt mà trên máy tính của bạn.</p>
-                        <div class="jump-link">
-                            <a href="#">Đọc thêm</a>
-                        </div>
-                    </div>
-                </article>
-            </div>
-
-            <!-- Cột Sidebar bên phải -->
-            <aside id="sidebar-wrapper">
-                <div class="sidebar-widget">
-                    <h3>Về tác giả</h3>
-                    <p>Mẫu thiết kế cao cấp bởi TemplatesYard, nay đã được sửa đổi cấu trúc để chạy độc lập.</p>
-                </div>
-                <div class="sidebar-widget">
-                    <h3>Mạng xã hội</h3>
-                    <p>Kết nối qua Facebook, Twitter X hoặc Youtube.</p>
-                </div>
-            </aside>
-
-        </div>
-    </main>
+    </div>
 
 </body>
 </html>
