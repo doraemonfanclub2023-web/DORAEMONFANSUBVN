@@ -3,54 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giao diện Web Style Oxxo</title>
-    <!-- Nhúng Font chữ giống trong code của bạn -->
-    <link href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@400;700&family=Prompt:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Nhúng FontAwesome để làm icon tìm kiếm, icon mạng xã hội -->
+    <title>Giao diện Oxxo Premium Style</title>
+    <!-- Nhúng Font chữ chuẩn Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@500;800&family=Prompt:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Nhúng Icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
 
     <style>
-        /* Định hình cấu trúc màu sắc và font chữ nền */
+        /* Toàn bộ cấu trúc nền theo style Neo-Brutalism */
+        :root {
+            --bg-color: #f0f3f7;
+            --main-color: #ffffff;
+            --accent-color: #ffde4d; /* Màu vàng thương hiệu */
+            --border-style: 3px solid #000000;
+            --shadow-style: 5px 5px 0px 0px #000000;
+            --shadow-hover: 2px 2px 0px 0px #000000;
+        }
+
         body {
-            background-color: #74b9ff; /* Màu nền xanh pastel */
+            background-color: var(--bg-color);
             font-family: 'Prompt', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Phần Header Logo */
-        .header-wrap {
-            text-align: center;
-            padding: 40px 0;
-        }
-        .header-logo h1 {
-            font-family: 'Lexend Exa', sans-serif;
             color: #000000;
-            margin: 0;
-            font-size: 28px;
-            text-transform: uppercase;
         }
 
-        /* Thanh Menu chính thiết kế bo tròn viền đen đổ bóng */
-        .header-menu {
-            max-width: 1170px;
+        /* Container bao bọc toàn trang để không bị tràn */
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
-        }
-        .block-sign {
-            background: #ffffff;
-            border: 2px solid #000000;
-            border-radius: 40px;
-            box-shadow: 0 3px 0 0 #000000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 80px;
             padding: 0 20px;
         }
 
-        /* Danh sách Menu điều hướng */
+        /* Header Logo */
+        .header-wrap {
+            text-align: center;
+            padding: 40px 0 20px 0;
+        }
+        .header-logo h1 {
+            font-family: 'Lexend Exa', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: -1px;
+            display: inline-block;
+            background: var(--accent-color);
+            padding: 10px 25px;
+            border: var(--border-style);
+            box-shadow: var(--shadow-style);
+            border-radius: 20px;
+        }
+
+        /* Thanh Menu bo tròn cao cấp */
+        .header-menu {
+            margin: 20px 0 40px 0;
+        }
+        .block-sign {
+            background: var(--main-color);
+            border: var(--border-style);
+            border-radius: 50px;
+            box-shadow: var(--shadow-style);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            padding: 0 30px;
+            transition: all 0.2s ease;
+        }
+        .block-sign:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0px 0px #000000;
+        }
+
         .main-menu-nav {
             display: flex;
             list-style: none;
@@ -60,73 +85,250 @@
         .main-menu-nav li a {
             color: #000000;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            padding: 0 15px;
-            line-height: 80px;
+            font-size: 15px;
+            padding: 0 20px;
+            line-height: 70px;
             display: block;
             transition: color 0.2s;
         }
         .main-menu-nav li a:hover {
-            color: #fbc02d; /* Màu vàng khi di chuột vào */
+            color: #ff5722;
+        }
+        .main-menu-nav li a i {
+            margin-right: 5px;
         }
 
-        /* Nút tìm kiếm bên phải menu */
+        /* Ô tìm kiếm */
         .search-box {
-            color: #000000;
-            font-size: 18px;
+            background: var(--accent-color);
+            border: var(--border-style);
+            width: 40px;
+            height: 40px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            padding: 10px;
+            transition: all 0.2s;
         }
         .search-box:hover {
-            color: #fbc02d;
+            transform: scale(1.1);
+            background: #000000;
+            color: #ffffff;
         }
 
-        /* Khu vực nội dung hiển thị chính bên dưới */
-        .content-wrapper {
-            max-width: 1170px;
-            margin: 40px auto;
-            padding: 0 15px;
+        /* Bố cục lưới danh sách bài viết (Giống bản gốc) */
+        .main-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Chia làm 2 cột: Nội dung và Sidebar */
+            gap: 30px;
+            margin-bottom: 5px;
         }
-        .main-post {
-            background: #ffffff;
+
+        @media (max-width: 900px) {
+            .main-wrapper {
+                grid-template-columns: 1fr; /* Màn hình nhỏ xếp dọc */
+            }
+        }
+
+        /* Thẻ bài viết (Post Card) thiết kế nổi bật */
+        .post-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        @media (max-width: 600px) {
+            .post-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--main-color);
+            border: var(--border-style);
+            border-radius: 30px;
+            box-shadow: var(--shadow-style);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 9px 9px 0px 0px #000000;
+        }
+
+        .card-thumb {
+            width: 100%;
+            height: 180px;
+            background: #e0e0e0;
+            border-bottom: var(--border-style);
+            position: relative;
+            overflow: hidden;
+        }
+        .card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--accent-color);
             border: 2px solid #000000;
-            border-radius: 40px;
-            box-shadow: 0 3px 0 0 #000000;
-            padding: 30px;
-            min-height: 200px;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 800;
+            border-radius: 15px;
+            text-transform: uppercase;
+        }
+
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            line-height: 1.4;
+        }
+        .card-title a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .card-title a:hover {
+            color: #ff5722;
+        }
+        .card-snippet {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Sidebar bên phải */
+        .sidebar-widget {
+            background: var(--main-color);
+            border: var(--border-style);
+            border-radius: 30px;
+            box-shadow: var(--shadow-style);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .widget-title {
+            font-family: 'Lexend Exa', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-bottom: var(--border-style);
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+        .social-btn {
+            flex: 1;
+            height: 45px;
+            border: var(--border-style);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 2px 2px 0 #000;
+        }
+        .social-btn.fb { background: #70a1ff; }
+        .social-btn.yt { background: #ff6b81; }
+        .social-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 #000;
         }
     </style>
 </head>
 <body>
 
-    <!-- Khối Header chứa Tên Web -->
-    <div class="header-wrap">
-        <div class="header-logo">
-            <h1>TÊN WEB CỦA BẠN</h1>
-        </div>
-    </div>
-
-    <!-- Khối Menu bo tròn đổ bóng đặc trưng giống mẫu -->
-    <div class="header-menu">
-        <div class="block-sign">
-            <ul class="main-menu-nav">
-                <li><a href="#"><i class="fa fa-home"></i> Trang Chủ</a></li>
-                <li><a href="#">Bài Viết</a></li>
-                <li><a href="#">Tính Năng</a></li>
-                <li><a href="#">Liên Hệ</a></li>
-            </ul>
-            <div class="search-box">
-                <i class="fa fa-search"></i>
+    <div class="container">
+        <!-- Khối Header chứa Tên Web -->
+        <div class="header-wrap">
+            <div class="header-logo">
+                <h1>OXXO HUB</h1>
             </div>
         </div>
-    </div>
 
-    <!-- Khối Nội Dung Chính -->
-    <div class="content-wrapper">
-        <div class="main-post">
-            <h2>Chào mừng bạn đến với Website!</h2>
-            <p>Đây là phần nội dung trang web được thiết kế mô phỏng theo cấu trúc và màu sắc từ giao diện Oxxo bạn đã cung cấp.</p>
+        <!-- Khối Menu bo tròn -->
+        <div class="header-menu">
+            <div class="block-sign">
+                <ul class="main-menu-nav">
+                    <li><a href="#"><i class="fa-solid fa-house"></i> Trang Chủ</a></li>
+                    <li><a href="#">Bài Viết</a></li>
+                    <li><a href="#">Dịch Vụ</a></li>
+                    <li><a href="#">Liên Hệ</a></li>
+                </ul>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cấu trúc nội dung chính -->
+        <div class="main-wrapper">
+            
+            <!-- Cột trái: Danh sách bài viết -->
+            <div class="post-grid">
+                
+                <!-- Bài viết 1 -->
+                <div class="card">
+                    <div class="card-thumb">
+                        <span class="card-tag">Công Nghệ</span>
+                        <img src="https://picsum.photos/400/250?random=1" alt="Thumbnail">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title"><a href="#">Cách xây dựng Website cực chất bằng GitHub Pages</a></h3>
+                        <div class="card-snippet">Hướng dẫn chi tiết từng bước để đưa giao diện Neo-Brutalism độc đáo của bạn lên mạng hoàn toàn miễn phí...</div>
+                    </div>
+                </div>
+
+                <!-- Bài viết 2 -->
+                <div class="card">
+                    <div class="card-thumb">
+                        <span class="card-tag">Design</span>
+                        <img src="https://picsum.photos/400/250?random=2" alt="Thumbnail">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title"><a href="#">Xu hướng thiết kế Neo-Brutalism trong năm mới</a></h3>
+                        <div class="card-snippet">Tại sao các đường viền đen dày và màu sắc tương phản mạnh đang thống trị xu hướng UI/UX hiện đại...</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Cột phải: Sidebar tiện ích -->
+            <div class="sidebar">
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Theo dõi chúng tôi</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-btn fb"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn yt"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">Giới thiệu</h3>
+                    <p style="font-size: 14px; line-height: 1.6; margin: 0;">Chào mừng bạn đến với không gian chia sẻ nội dung cá nhân được tùy biến theo phong cách truyện tranh cực ngầu.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
