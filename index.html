@@ -3,331 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giao diện Oxxo Premium Style</title>
-    <!-- Nhúng Font chữ chuẩn Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@500;800&family=Prompt:wght@400;600;800&display=swap" rel="stylesheet">
-    <!-- Nhúng Icon -->
+    <title>Giao diện Hiện đại & Tối giản</title>
+    <!-- Font chữ Inter chuẩn quốc tế cực sang -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icon FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
 
     <style>
-        /* Toàn bộ cấu trúc nền theo style Neo-Brutalism */
         :root {
-            --bg-color: #f0f3f7;
-            --main-color: #ffffff;
-            --accent-color: #ffde4d; /* Màu vàng thương hiệu */
-            --border-style: 3px solid #000000;
-            --shadow-style: 5px 5px 0px 0px #000000;
-            --shadow-hover: 2px 2px 0px 0px #000000;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --primary-color: #4a90e2;
         }
 
         body {
-            background-color: var(--bg-color);
-            font-family: 'Prompt', sans-serif;
+            background: var(--bg-gradient);
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            color: #000000;
+            color: var(--text-main);
+            min-height: 100vh;
         }
 
-        /* Container bao bọc toàn trang để không bị tràn */
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 40px 20px;
         }
 
-        /* Header Logo */
-        .header-wrap {
-            text-align: center;
-            padding: 40px 0 20px 0;
-        }
-        .header-logo h1 {
-            font-family: 'Lexend Exa', sans-serif;
-            font-size: 36px;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin: 0;
-            letter-spacing: -1px;
-            display: inline-block;
-            background: var(--accent-color);
-            padding: 10px 25px;
-            border: var(--border-style);
-            box-shadow: var(--shadow-style);
-            border-radius: 20px;
-        }
-
-        /* Thanh Menu bo tròn cao cấp */
-        .header-menu {
-            margin: 20px 0 40px 0;
-        }
-        .block-sign {
-            background: var(--main-color);
-            border: var(--border-style);
-            border-radius: 50px;
-            box-shadow: var(--shadow-style);
+        /* Header tinh tế */
+        .header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            height: 70px;
-            padding: 0 30px;
-            transition: all 0.2s ease;
-        }
-        .block-sign:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 7px 7px 0px 0px #000000;
+            align-items: center;
+            padding: 20px 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
         }
 
-        .main-menu-nav {
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
             display: flex;
             list-style: none;
             margin: 0;
             padding: 0;
         }
-        .main-menu-nav li a {
-            color: #000000;
+
+        .nav-links li a {
+            color: var(--text-main);
             text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
+            font-weight: 500;
             font-size: 15px;
-            padding: 0 20px;
-            line-height: 70px;
-            display: block;
-            transition: color 0.2s;
-        }
-        .main-menu-nav li a:hover {
-            color: #ff5722;
-        }
-        .main-menu-nav li a i {
-            margin-right: 5px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
-        /* Ô tìm kiếm */
-        .search-box {
-            background: var(--accent-color);
-            border: var(--border-style);
-            width: 40px;
-            height: 40px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .search-box:hover {
-            transform: scale(1.1);
-            background: #000000;
-            color: #ffffff;
+        .nav-links li a:hover {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
         }
 
-        /* Bố cục lưới danh sách bài viết (Giống bản gốc) */
-        .main-wrapper {
+        /* Lưới nội dung */
+        .content-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr; /* Chia làm 2 cột: Nội dung và Sidebar */
+            grid-template-columns: 2fr 1fr;
             gap: 30px;
-            margin-bottom: 5px;
         }
 
-        @media (max-width: 900px) {
-            .main-wrapper {
-                grid-template-columns: 1fr; /* Màn hình nhỏ xếp dọc */
-            }
-        }
-
-        /* Thẻ bài viết (Post Card) thiết kế nổi bật */
-        .post-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-        @media (max-width: 600px) {
-            .post-grid {
+        @media (max-width: 850px) {
+            .content-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        .card {
-            background: var(--main-color);
-            border: var(--border-style);
-            border-radius: 30px;
-            box-shadow: var(--shadow-style);
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Thẻ bài viết mềm mại */
+        .main-content {
             display: flex;
             flex-direction: column;
-        }
-        .card:hover {
-            transform: translate(-4px, -4px);
-            box-shadow: 9px 9px 0px 0px #000000;
+            gap: 25px;
         }
 
-        .card-thumb {
-            width: 100%;
-            height: 180px;
-            background: #e0e0e0;
-            border-bottom: var(--border-style);
-            position: relative;
+        .post-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .card-thumb img {
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .post-hero-img {
             width: 100%;
-            height: 100%;
+            height: 260px;
             object-fit: cover;
         }
-        .card-tag {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: var(--accent-color);
-            border: 2px solid #000000;
-            padding: 5px 12px;
-            font-size: 12px;
-            font-weight: 800;
-            border-radius: 15px;
-            text-transform: uppercase;
+
+        .post-body {
+            padding: 30px;
         }
 
-        .card-content {
-            padding: 20px;
+        .post-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            line-height: 1.3;
+        }
+
+        .post-text {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Sidebar tối giản */
+        .sidebar {
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
-        }
-        .card-title {
-            font-size: 18px;
-            font-weight: 800;
-            margin: 0 0 10px 0;
-            line-height: 1.4;
-        }
-        .card-title a {
-            color: #000000;
-            text-decoration: none;
-        }
-        .card-title a:hover {
-            color: #ff5722;
-        }
-        .card-snippet {
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            gap: 25px;
         }
 
-        /* Sidebar bên phải */
-        .sidebar-widget {
-            background: var(--main-color);
-            border: var(--border-style);
-            border-radius: 30px;
-            box-shadow: var(--shadow-style);
+        .widget {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
             padding: 25px;
-            margin-bottom: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
+
         .widget-title {
-            font-family: 'Lexend Exa', sans-serif;
             font-size: 16px;
-            font-weight: 800;
-            text-transform: uppercase;
-            border-bottom: var(--border-style);
-            padding-bottom: 10px;
+            font-weight: 700;
             margin-top: 0;
             margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(74, 144, 226, 0.2);
         }
-        .social-links {
+
+        .about-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .social-icons {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            margin-top: 10px;
         }
-        .social-btn {
-            flex: 1;
-            height: 45px;
-            border: var(--border-style);
-            border-radius: 15px;
+
+        .social-icons a {
+            width: 38px;
+            height: 38px;
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-main);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #000;
             text-decoration: none;
-            font-weight: 600;
-            box-shadow: 2px 2px 0 #000;
+            transition: all 0.2s ease;
         }
-        .social-btn.fb { background: #70a1ff; }
-        .social-btn.yt { background: #ff6b81; }
-        .social-btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0 #000;
+
+        .social-icons a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Khối Header chứa Tên Web -->
-        <div class="header-wrap">
-            <div class="header-logo">
-                <h1>OXXO HUB</h1>
-            </div>
-        </div>
+        <!-- Thanh điều hướng Header -->
+        <header class="header">
+            <div class="logo">Workspace.</div>
+            <ul class="nav-links">
+                <li><a href="#">Trang chủ</a></li>
+                <li><a href="#">Dự án</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
+        </header>
 
-        <!-- Khối Menu bo tròn -->
-        <div class="header-menu">
-            <div class="block-sign">
-                <ul class="main-menu-nav">
-                    <li><a href="#"><i class="fa-solid fa-house"></i> Trang Chủ</a></li>
-                    <li><a href="#">Bài Viết</a></li>
-                    <li><a href="#">Dịch Vụ</a></li>
-                    <li><a href="#">Liên Hệ</a></li>
-                </ul>
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cấu trúc nội dung chính -->
-        <div class="main-wrapper">
+        <!-- Bố cục chính -->
+        <div class="content-grid">
             
-            <!-- Cột trái: Danh sách bài viết -->
-            <div class="post-grid">
-                
-                <!-- Bài viết 1 -->
-                <div class="card">
-                    <div class="card-thumb">
-                        <span class="card-tag">Công Nghệ</span>
-                        <img src="https://picsum.photos/400/250?random=1" alt="Thumbnail">
+            <!-- Cột nội dung chính -->
+            <main class="main-content">
+                <article class="post-card">
+                    <img src="https://picsum.photos/800/450?random=1" class="post-hero-img" alt="Cover">
+                    <div class="post-body">
+                        <div class="post-meta">Phát triển Web • GitHub Pages</div>
+                        <h2 class="post-title">Làm sao để tuỳ biến một giao diện Web mang đậm tính cá nhân?</h2>
+                        <p class="post-text">Khám phá cách tận dụng HTML, CSS hiện đại kết hợp với những hiệu ứng chuyển động mượt mà để tạo nên một không gian số tối giản, tinh tế nhưng không kém phần chuyên nghiệp.</p>
                     </div>
-                    <div class="card-content">
-                        <h3 class="card-title"><a href="#">Cách xây dựng Website cực chất bằng GitHub Pages</a></h3>
-                        <div class="card-snippet">Hướng dẫn chi tiết từng bước để đưa giao diện Neo-Brutalism độc đáo của bạn lên mạng hoàn toàn miễn phí...</div>
-                    </div>
-                </div>
+                </article>
+            </main>
 
-                <!-- Bài viết 2 -->
-                <div class="card">
-                    <div class="card-thumb">
-                        <span class="card-tag">Design</span>
-                        <img src="https://picsum.photos/400/250?random=2" alt="Thumbnail">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title"><a href="#">Xu hướng thiết kế Neo-Brutalism trong năm mới</a></h3>
-                        <div class="card-snippet">Tại sao các đường viền đen dày và màu sắc tương phản mạnh đang thống trị xu hướng UI/UX hiện đại...</div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Cột phải: Sidebar tiện ích -->
-            <div class="sidebar">
-                <div class="sidebar-widget">
-                    <h3 class="widget-title">Theo dõi chúng tôi</h3>
-                    <div class="social-links">
-                        <a href="#" class="social-btn fb"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-btn yt"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="sidebar-widget">
+            <!-- Cột Sidebar -->
+            <aside class="sidebar">
+                <div class="widget">
                     <h3 class="widget-title">Giới thiệu</h3>
-                    <p style="font-size: 14px; line-height: 1.6; margin: 0;">Chào mừng bạn đến với không gian chia sẻ nội dung cá nhân được tùy biến theo phong cách truyện tranh cực ngầu.</p>
+                    <p class="about-text">Một không gian lưu trữ và chia sẻ những dự án cá nhân được triển khai hoàn toàn miễn phí trên nền tảng GitHub.</p>
                 </div>
-            </div>
+
+                <div class="widget">
+                    <h3 class="widget-title">Kết nối</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </aside>
 
         </div>
     </div>
