@@ -520,19 +520,42 @@
         }
 
         // 2. HÀM CHUYỂN TRANG/ĐỔI TẬP TẠI CHỖ KHÔNG LOAD LẠI TRANG
-        function switchPageToWatch(id) {
-            const movie = localMoviesCache[id];
-            if (!movie) return;
+function switchPageToWatch(id) {
+    const movie = localMoviesCache[id];
+    if (!movie) return;
 
-            const playerZone = document.getElementById('player-zone');
-            if (movie.url && movie.url.includes('<iframe')) {
-                playerZone.innerHTML = movie.url;
-            } else {
-                playerZone.innerHTML = `<div style="padding:50px; text-align:center; color:var(--text-muted)">Đang cập nhật link nhúng phát video...</div>`;
-            }
+    const playerZone = document.getElementById('player-zone');
+    
+    // ---- SỬA CHỖ NÀY ĐỂ NHÚNG PHIM TRỰC TIẾP TRONG CODE ----
+    if (id === "ID_CỦA_TẬP_PHIM_MUỐN_CHÈN") { 
+        // Cách A: Nhúng bằng cả đoạn mã iframe
+        playerZone.innerHTML = `<iframe src="https://link-phim-cua-ban.com/embed" allowfullscreen></iframe>`;
+    } 
+    else if (movie.url && movie.url.includes('<iframe')) {
+        // Mặc định: Lấy mã iframe từ cơ sở dữ liệu Firebase nếu có
+        playerZone.innerHTML = movie.url; 
+    } 
+    else {
+        // Cách B: Nhúng một link xem phim chung/dự phòng cho tất cả các tập chưa có link trên Firebase
+        playerZone.innerHTML = `<iframe src="https://link-phim-du-phong.com/embed" allowfullscreen></iframe>`;
+    }
+    // --------------------------------------------------------
+    
+    document.getElementById('watch-title').innerText = movie.title || "Tập phim chưa có tên";
+    document.getElementById('watch-meta').innerText = `Năm: ${movie.year || '2026'} • Thời lượng: ${movie.duration || '0'} phút • Nhóm dịch: Mon Fansub`;
 
-            document.getElementById('watch-title').innerText = movie.title || "Tập phim chưa có tên";
-            document.getElementById('watch-meta').innerText = `Năm: ${movie.year || '2026'} • Thời lượng: ${movie.duration || '0'} phút • Nhóm dịch: Mon Fansub`;
+    document.querySelectorAll('.quick-ep-btn').forEach(btn => {
+        if(btn.getAttribute('data-movie-id') === id) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    viewHome.classList.remove('active');
+    viewWatch.classList.add('active');
+    window.location.hash = `watch?id=${id}`;
+}
 
             // Active nút tập đang chọn trong danh sách sidebar
             document.querySelectorAll('.quick-ep-btn').forEach(btn => {
