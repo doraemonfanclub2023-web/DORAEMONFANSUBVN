@@ -26,7 +26,7 @@
             min-height: 100vh;
         }
 
-        /* HEADER & MENU THEO ĐỀ XUẤT MỚI */
+        /* HEADER & MENU */
         .header {
             display: flex;
             justify-content: space-between;
@@ -55,7 +55,6 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        /* Style kích hoạt màu xanh chủ đạo giống hình mẫu của bạn */
         .nav-item.active { background: var(--primary-color); color: #fff; }
         .nav-item:hover:not(.active) { background: rgba(74, 144, 226, 0.1); color: var(--primary-color); }
 
@@ -133,6 +132,7 @@
 
         .clearfix::after { content: ""; clear: both; display: table; }
 
+        /* POST CARD */
         .post-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
@@ -147,7 +147,7 @@
         .author-info { display: flex; flex-direction: column; }
         .author-name { font-weight: 700; font-size: 14px; }
         .post-time { font-size: 12px; color: var(--text-muted); }
-        .post-content { font-size: 15px; line-height: 1.6; word-wrap: break-word; }
+        .post-content { font-size: 15px; line-height: 1.6; word-wrap: break-word; white-space: pre-wrap; }
 
         .widget {
             background: var(--card-bg);
@@ -177,36 +177,12 @@
             transition: transform 0.3s ease;
         }
 
-        .movie-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .movie-poster {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            background: #cbd5e0;
-        }
-
-        .movie-info {
-            padding: 15px;
-        }
-
-        .movie-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin: 0 0 5px 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .movie-meta {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-
+        .movie-card:hover { transform: translateY(-5px); }
+        .movie-poster { width: 100%; height: 300px; object-fit: cover; background: #cbd5e0; }
+        .movie-info { padding: 15px; }
+        .movie-title { font-size: 16px; font-weight: 700; margin: 0 0 5px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .movie-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+        
         .btn-watch {
             display: block;
             text-align: center;
@@ -258,12 +234,12 @@
                 <div id="navMovies" class="nav-item">Phim</div>
             </nav>
         </div>
-        <div class="header-right" id="headerAuth">
-            </div>
+        <div class="header-right" id="headerAuth"></div>
     </header>
 
     <div class="container">
         
+        <!-- Tab Cộng đồng -->
         <div id="viewCommunity" class="community-layout">
             <aside class="sidebar-left">
                 <ul class="sidebar-menu">
@@ -283,12 +259,11 @@
                 </div>
             </main>
 
-            <aside class="sidebar-right" id="sidebarAuth">
-                </aside>
+            <aside class="sidebar-right" id="sidebarAuth"></aside>
         </div>
 
+        <!-- Tab Phim -->
         <div id="viewMovies" class="movie-layout hidden">
-            
             <div class="movie-card">
                 <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500" class="movie-poster" alt="Phim hoạt hình">
                 <div class="movie-info">
@@ -315,14 +290,13 @@
                     <a href="https://www.youtube.com/results?search_query=nobita+va+hanh+tinh+muong+thu" target="_blank" class="btn-watch"><i class="fa-solid fa-play"></i> Xem Ngay</a>
                 </div>
             </div>
-
         </div>
 
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -342,7 +316,7 @@
 
         let currentUser = null;
 
-        // --- XỬ LÝ CHUYỂN TAB MENU MƯỢT MÀ ---
+        // --- XỬ LÝ CHUYỂN TAB MENU ---
         const navCommunity = document.getElementById('navCommunity');
         const navMovies = document.getElementById('navMovies');
         const viewCommunity = document.getElementById('viewCommunity');
@@ -362,6 +336,71 @@
             viewCommunity.classList.add('hidden');
         });
 
+        // --- HÀM ĐĂNG BÀI VIẾT LÊN FIRESTORE ---
+        async function dangBai() {
+            const postInput = document.getElementById('postInput');
+            if (!postInput || !currentUser) return;
+
+            const content = postInput.value.trim();
+            if (content === "") {
+                alert("Vui lòng nhập nội dung bài viết!");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "posts"), {
+                    uid: currentUser.uid,
+                    authorName: currentUser.displayName,
+                    authorAvatar: currentUser.photoURL,
+                    content: content,
+                    createdAt: serverTimestamp() // Sử dụng thời gian máy chủ để đồng bộ
+                });
+                postInput.value = ""; // Xóa trắng khung nhập sau khi đăng thành công
+            } catch (error) {
+                console.error("Lỗi khi đăng bài:", error);
+                alert("Đăng bài thất bại, vui lòng thử lại.");
+            }
+        }
+
+        // --- LẮNG NGHE DANH SÁCH BÀI VIẾT THỜI GIAN THỰC ---
+        const newsfeed = document.getElementById('newsfeed');
+        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+
+        onSnapshot(q, (snapshot) => {
+            if (snapshot.empty) {
+                newsfeed.innerHTML = `<p style="text-align: center; color: var(--text-muted);">Chưa có bài viết nào. Hãy là người đầu tiên chia sẻ!</p>`;
+                return;
+            }
+
+            let html = "";
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                
+                // Xử lý hiển thị thời gian linh hoạt
+                let timeString = "Vừa xong";
+                if (data.createdAt) {
+                    const date = data.createdAt.toDate();
+                    timeString = date.toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' });
+                }
+
+                html += `
+                    <div class="post-card">
+                        <div class="post-header">
+                            <img src="${data.authorAvatar || 'https://via.placeholder.com/45'}" class="avatar" style="width: 40px; height: 40px;" alt="Avatar">
+                            <div class="author-info">
+                                <span class="author-name">${data.authorName || 'Người dùng ẩn danh'}</span>
+                                <span class="post-time">${timeString}</span>
+                            </div>
+                        </div>
+                        <div class="post-content">${data.content}</div>
+                    </div>
+                `;
+            });
+            newsfeed.innerHTML = html;
+        }, (error) => {
+            console.error("Lỗi khi tải dữ liệu bài viết:", error);
+            newsfeed.innerHTML = `<p style="text-align: center; color: #e53e3e;">Lỗi khi tải dòng trạng thái.</p>`;
+        });
 
         // --- FIREBASE AUTHENTICATION CONFIG ---
         onAuthStateChanged(auth, (user) => {
@@ -407,4 +446,10 @@
                 `;
 
                 document.getElementById('btnLogin').addEventListener('click', () => {
-                    signInWithPopup(auth, provider
+                    signInWithPopup(auth, provider).catch(err => console.error("Lỗi đăng nhập:", err));
+                });
+            }
+        });
+    </script>
+</body>
+</html>
