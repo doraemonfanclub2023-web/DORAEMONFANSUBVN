@@ -1,22 +1,51 @@
-<script type="module">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Doraemon Fansub</title>
+    <style>
+        .active { display: block !important; }
+        #view-home, #view-watch { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Giao diện Home -->
+    <div id="view-home" class="active">
+        <div id="featured-carousel"></div>
+        <div id="movie-grid-list"></div>
+        <div id="quick-episodes"></div>
+    </div>
+
+    <!-- Giao diện Xem phim -->
+    <div id="view-watch">
+        <button id="btn-coconut">Quay lại</button>
+        <h1 id="watch-title"></h1>
+        <p id="watch-meta"></p>
+        <div id="player-zone"></div>
+    </div>
+
+    <!-- Đoạn code JS hoàn chỉnh -->
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+        // BẠN HÃY ĐIỀN ĐẦY ĐỦ THÔNG TIN TẠI ĐÂY
         const firebaseConfig = {
             apiKey: "AIzaSyD8J4FX3qSFlCgYEPXaBGC9Lf6yhCHt9OY", 
             authDomain: "giao-luu-fandom.firebaseapp.com",
             projectId: "giao-luu-fandom",
             storageBucket: "giao-luu-fandom.appspot.com",
-            messagingSenderId: "...", 
-            appId: "..." 
+            messagingSenderId: "503216355558", 
+            appId: "1:503216355558:web:39483fb414e68536476327" 
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        signInAnonymously(auth).catch((error) => console.error(error));
+        signInAnonymously(auth).catch((error) => console.error("Lỗi đăng nhập:", error));
 
         const viewHome = document.getElementById('view-home');
         const viewWatch = document.getElementById('view-watch');
@@ -37,15 +66,11 @@
                 localMoviesCache[doc.id] = movie;
 
                 gridHtml += `<div class="movie-card" data-movie-id="${doc.id}">
-                    <div class="poster-wrapper">
-                        <img src="${movie.poster || 'https://via.placeholder.com/300x180'}">
-                        <div class="episode-badge">Tập ${movie.duration || 'New'}</div>
-                    </div>
-                    <div class="movie-card-info"><h4 class="movie-card-title">${movie.title}</h4></div>
+                    <img src="${movie.poster || 'https://via.placeholder.com/300x180'}">
+                    <h4>${movie.title}</h4>
                 </div>`;
-
                 carouselHtml += `<div class="carousel-item" data-movie-id="${doc.id}"><img src="${movie.poster}"></div>`;
-                quickEpHtml += `<button class="quick-ep-btn" data-movie-id="${doc.id}">Tập ${movie.duration}: ${movie.title}</button>`;
+                quickEpHtml += `<button class="quick-ep-btn" data-movie-id="${doc.id}">Tập ${movie.duration}</button>`;
             });
 
             movieGridList.innerHTML = gridHtml;
@@ -67,12 +92,12 @@
 
             viewHome.classList.remove('active');
             viewWatch.classList.add('active');
-            window.location.hash = `watch?id=${id}`;
         }
 
         btnCoconut.addEventListener('click', () => {
             viewWatch.classList.remove('active');
             viewHome.classList.add('active');
-            window.location.hash = "";
         });
     </script>
+</body>
+</html>
