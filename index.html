@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giao diện Hiện đại & Tối giản</title>
-    <!-- Font chữ Inter chuẩn quốc tế cực sang -->
+    <title>Mon Fansub - Xem Phim Realtime</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Icon FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
 
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --text-main: #2d3748;
-            --text-muted: #718096;
-            --primary-color: #4a90e2;
+            --bg-color: #121212;
+            --card-bg: #1a1a1a;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --primary-color: #e50914; /* Màu đỏ chuẩn cinematic */
+            --accent-color: #2da44e;
         }
 
         body {
-            background: var(--bg-gradient);
+            background-color: var(--bg-color);
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
@@ -28,167 +27,243 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px;
         }
 
-        /* Header tinh tế */
+        /* Header giống thanh điều hướng Mon Fansub */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 30px;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 15px 0;
+            border-bottom: 1px solid #222;
             margin-bottom: 30px;
         }
 
-        .logo {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--primary-color);
-        }
-
-        .nav-links {
+        .logo-area {
             display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
+            align-items: center;
+            gap: 15px;
         }
 
-        .nav-links li a {
-            color: var(--text-main);
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
             text-decoration: none;
+        }
+
+        .btn-nav {
+            background: #222;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
             font-weight: 500;
-            font-size: 15px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .nav-links li a:hover {
-            background: rgba(74, 144, 226, 0.1);
-            color: var(--primary-color);
+        /* Các View (Trang thành phần) ẩn/hiện chủ động */
+        .page-view {
+            display: none;
+        }
+        
+        .page-view.active {
+            display: block;
         }
 
-        .nav-links li.active a {
-            background: rgba(74, 144, 226, 0.1);
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        /* Lưới hiển thị danh sách phim Realtime từ Firebase */
-        .movie-layout {
+        /* LƯỚI DANH SÁCH PHIM (HOME VIEW) */
+        .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
         }
 
-        /* Thẻ bài viết mềm mại / Thẻ phim */
         .movie-card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid #282828;
         }
 
         .movie-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: scale(1.03);
         }
 
-        .movie-poster {
+        .poster-wrapper {
             width: 100%;
-            height: 200px;
+            aspect-ratio: 2/3;
+            background: #222;
+            position: relative;
+        }
+
+        .poster-wrapper img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
 
-        .movie-player iframe {
+        .episode-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        .movie-card-info {
+            padding: 12px;
+        }
+
+        .movie-card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* GIAO DIỆN XEM PHIM TÍNH HỢP (WATCH VIEW) */
+        .watch-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .watch-layout { grid-template-columns: 1fr; }
+        }
+
+        .video-player-container {
+            background: #000;
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .video-player-container iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
 
-        .movie-info {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .video-details {
+            margin-top: 15px;
         }
 
-        .movie-meta {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .movie-title {
-            font-size: 18px;
+        .video-title {
+            font-size: 22px;
             font-weight: 700;
             margin: 0 0 10px 0;
-            line-height: 1.3;
         }
 
-        .btn-watch {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            text-align: center;
-            padding: 10px 15px;
-            border-radius: 8px;
-            text-decoration: none;
+        /* Sidebar bên phải: Danh sách tập / Bình luận giả lập */
+        .watch-sidebar {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #282828;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
             font-weight: 600;
-            font-size: 14px;
-            transition: background 0.2s;
-            margin-top: 10px;
+            margin: 0 0 10px 0;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 8px;
         }
 
-        .btn-watch:hover {
-            background: #357abd;
+        .comment-box {
+            background: #121212;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #222;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Thanh điều hướng Header -->
+        <!-- Header điều hướng không load lại trang -->
         <header class="header">
-            <div class="logo">Workspace.</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Trang chủ</a></li>
-                <li><a href="congdong.html">Cộng đồng</a></li>
-                <li class="active"><a href="phim.html">Phim</a></li>
-                <li><a href="duan.html">Dự án</a></li>
-                <li><a href="blog.html">Blog</a></li>
-            </ul>
+            <div class="logo-area">
+                <a href="#" class="logo">monFANSUB</a>
+                <!-- Nút bấm quay lại danh sách tổng hợp (icon Coconut) -->
+                <button class="btn-nav" id="btn-coconut">
+                    <i class="fa-solid fa-cookie-bite"></i> Coconut
+                </button>
+            </div>
+            <div class="user-profile">
+                <i class="fa-solid fa-circle-user class" style="font-size: 28px; color: var(--text-muted);"></i>
+            </div>
         </header>
 
-        <!-- KHU VỰC HIỂN THỊ PHIM TỰ ĐỘNG (Đã xóa bỏ hoàn toàn phim viết cứng) -->
-        <div id="viewMovies" class="movie-layout">
-            <p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Đang tải danh sách phim từ hệ thống...</p>
-        </div>
+        <!-- VIEW 1: DANH SÁCH TỔNG HỢP (Coconut Room) -->
+        <main id="view-home" class="page-view active">
+            <h2 style="font-size: 20px; margin-bottom: 20px;">Doraemon TV Series</h2>
+            <div id="movie-grid-list" class="movie-grid">
+                <p style="color: var(--text-muted)">Đang tải danh sách tập phim...</p>
+            </div>
+        </main>
+
+        <!-- VIEW 2: TRANG PHÁT VIDEO TÍNH HỢP (Chạy ngay tại chỗ khi nhấn vào phim) -->
+        <main id="view-watch" class="page-view">
+            <div class="watch-layout">
+                <!-- Bên trái: Trình phát video -->
+                <div class="left-content">
+                    <div class="video-player-container" id="player-zone">
+                        <!-- Mã nhúng iframe từ Firebase sẽ được render động vào đây -->
+                    </div>
+                    <div class="video-details">
+                        <h1 class="video-title" id="watch-title">Đang tải tên tập...</h1>
+                        <p style="color: var(--text-muted); font-size: 14px;" id="watch-meta"></p>
+                    </div>
+                </div>
+
+                <!-- Bên phải: Khu vực tương tác hoặc danh sách liên quan -->
+                <div class="watch-sidebar">
+                    <div>
+                        <h3 class="sidebar-title">Bình luận trực tuyến</h3>
+                        <div class="comment-box">
+                            <div class="comment-user">Minh Nguyễn</div>
+                            <div>Tập này nhóm làm sub mượt ghê, hóng tập sau ạ! ❤️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <!-- KHU VỰC SCRIPT MODULE (Chứa cấu hình Firebase toàn vẹn) -->
+    <!-- CODE SỬ LÝ ROUTER & REALTIME FIREBASE -->
     <script type="module">
-        // Bạn lưu ý giữ nguyên cụm Import và đoạn cấu hình Firebase ban đầu (apiKey, authDomain, projectId...) của bạn ở đây nhé
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Cấu hình Firebase cá nhân của bạn (Điền phần config của bạn vào đây nếu chưa có)
+        // Cấu hình Firebase của dự án của bạn
         const firebaseConfig = {
             apiKey: "AIzaSy...",
             authDomain: "giao-luu-fandom.firebaseapp.com",
@@ -198,55 +273,93 @@
             appId: "..."
         };
 
-        // Khởi tạo Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- LẮNG NGHE DANH SÁCH PHIM THỜI GIAN THỰC TỪ FIRESTORE ---
-        const viewMovies = document.getElementById('viewMovies');
+        // Các biến Dom điều khiển giao diện ẩn hiện
+        const viewHome = document.getElementById('view-home');
+        const viewWatch = document.getElementById('view-watch');
+        const movieGridList = document.getElementById('movie-grid-list');
+        const btnCoconut = document.getElementById('btn-coconut');
+
+        // Bộ lưu trữ dữ liệu tạm thời để lấy nhanh khi bấm
+        let localMoviesCache = {};
+
+        // 1. LẮNG NGHE REALTIME DANH SÁCH PHIM TỪ FIRESTORE
         const qMovies = query(collection(db, "movies"), orderBy("year", "desc"));
-
         onSnapshot(qMovies, (snapshot) => {
-            if (snapshot.empty) {
-                viewMovies.innerHTML = `<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Hiện chưa có phim nào được nhúng.</p>`;
-                return;
-            }
+            let gridHtml = "";
+            localMoviesCache = {}; // Clear bộ nhớ đệm cũ
 
-            let movieHtml = "";
-            snapshot.forEach((doc) => {
-                const movie = doc.data();
-                
-                let videoContent = "";
-                // Kiểm tra xem dữ liệu url có chứa thẻ iframe nhúng phim hay không
-                if (movie.url && movie.url.includes("<iframe")) {
-                    videoContent = `<div class="movie-player" style="width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #000;">${movie.url}</div>`;
-                } else {
-                    videoContent = `
-                        <img src="${movie.poster || 'https://via.placeholder.com/500x300'}" class="movie-poster" alt="${movie.title}">
-                        <div style="padding: 0 20px;"><a href="${movie.url || '#'}" target="_blank" class="btn-watch"><i class="fa-solid fa-play"></i> Xem Ngay</a></div>
-                    `;
-                }
+            snapshot.forEach((documentData) => {
+                const id = documentData.id;
+                const movie = documentData.data();
+                localMoviesCache[id] = movie; // Lưu vào cache
 
-                // Nếu là phim dạng iframe, cho thẻ card co giãn rộng gấp đôi cho dễ xem phim
-                const cardStyle = (movie.url && movie.url.includes("<iframe")) ? "grid-column: span 2; min-width: 100%;" : "auto";
-
-                movieHtml += `
-                    <div class="movie-card" style="${cardStyle}">
-                        ${videoContent}
-                        <div class="movie-info">
-                            <div>
-                                <h3 class="movie-title">${movie.title || 'Chưa có tên'}</h3>
-                                <div class="movie-meta">Năm: ${movie.year || '----'}</div>
-                            </div>
-                            <div class="movie-meta" style="margin-top: 5px;"><i class="fa-regular fa-clock"></i> Thời lượng: ${movie.duration || '0'} phút</div>
+                gridHtml += `
+                    <div class="movie-card" data-id="${id}">
+                        <div class="poster-wrapper">
+                            <img src="${movie.poster || 'https://via.placeholder.com/300x450'}" alt="${movie.title}">
+                            <div class="episode-badge">Tập ${movie.duration || 'New'}</div>
+                        </div>
+                        <div class="movie-card-info">
+                            <h4 class="movie-card-title">${movie.title || 'Chưa rõ tên tập'}</h4>
                         </div>
                     </div>
                 `;
             });
-            viewMovies.innerHTML = movieHtml;
-        }, (error) => {
-            console.error("Lỗi khi tải dữ liệu phim:", error);
-            viewMovies.innerHTML = `<p style="text-align: center; color: #e53e3e; grid-column: 1/-1;">Không thể tải danh sách phim. Vui lòng kiểm tra phân quyền Rules.</p>`;
+            movieGridList.innerHTML = gridHtml;
+
+            // Gắn sự kiện click trực tiếp cho từng thẻ phim mới tạo
+            document.querySelectorAll('.movie-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const movieId = card.getAttribute('data-id');
+                    switchPageToWatch(movieId);
+                });
+            });
+        });
+
+        // 2. HÀM CHUYỂN ĐỔI GIAO DIỆN TẠI CHỖ (SINGLE PAGE ROUTER)
+        function switchPageToWatch(id) {
+            const movie = localMoviesCache[id];
+            if (!movie) return;
+
+            // Cập nhật nội dung video nhúng iframe
+            const playerZone = document.getElementById('player-zone');
+            if (movie.url && movie.url.includes('<iframe')) {
+                playerZone.innerHTML = movie.url; // Nhúng trực tiếp iframe gốc
+            } else {
+                playerZone.innerHTML = `<div style="padding:40px; text-align:center; color:#fff;">Link video không hợp lệ hoặc không phải iframe nhúng.</div>`;
+            }
+
+            // Điền thông tin tiêu đề phim
+            document.getElementById('watch-title').innerText = movie.title || "Không có tiêu đề";
+            document.getElementById('watch-meta').innerText = `Năm phát hành: ${movie.year || '----'} | Thời lượng cấu hình: ${movie.duration || '0'} phút`;
+
+            // Thực hiện ẩn danh sách Home và Hiện trang xem phim ngay lập tức
+            viewHome.classList.remove('active');
+            viewWatch.classList.add('active');
+
+            // Cập nhật hash url để người dùng nhận diện, không bị load lại trang
+            window.location.hash = `watch?id=${id}`;
+        }
+
+        // Sự kiện khi bấm vào nút Coconut -> Trở về danh sách tổng hợp tại chỗ
+        btnCoconut.addEventListener('click', () => {
+            document.getElementById('player-zone').innerHTML = ""; // Tắt video đang phát ngầm
+            viewWatch.classList.remove('active');
+            viewHome.classList.add('active');
+            window.location.hash = ""; // Xoá Hash trên link
+        });
+
+        // Hỗ trợ nếu người dùng F5 hoặc truy cập trực tiếp bằng đường link chứa hash mẫu: #watch?id=...
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash.startsWith('#watch?id=')) {
+                const id = hash.split('=')[1];
+                // Đợi một chút để dữ liệu Firebase Firebase đổ về Cache rồi kích hoạt view xem phim
+                setTimeout(() => { switchPageToWatch(id); }, 1200);
+            }
         });
     </script>
 </body>
