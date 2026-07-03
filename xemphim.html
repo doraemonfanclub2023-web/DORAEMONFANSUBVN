@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xem Phim Trực Tuyến</title>
+    <!-- Font chữ Inter sang xịn mịn -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icon FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --primary-color: #4a90e2;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header đồng bộ với ảnh mẫu */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Bố cục trang xem phim */
+        .player-grid {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .player-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Khung chứa Video Player */
+        .video-container {
+            background: #000000;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9; /* Tự động co giãn theo tỷ lệ video chuẩn */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Thông tin phim */
+        .movie-info {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+        }
+
+        .movie-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+
+        .movie-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .movie-desc {
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+            color: #4a5568;
+        }
+
+        /* Khu vực Bình luận / Cộng đồng */
+        .comment-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Danh sách tập phim / Sidebar */
+        .sidebar-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .episode-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .episode-btn {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-main);
+            text-decoration: none;
+            text-align: center;
+            padding: 10px 0;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .episode-btn:hover {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
+            border-color: rgba(74, 144, 226, 0.3);
+        }
+
+        .episode-btn.active {
+            background: var(--primary-color);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">Workspace.</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="duan.html">Dự án</a></li>
+                <li><a href="blog.html">Blog</a></li>
+            </ul>
+        </header>
+
+        <!-- Bố cục xem phim -->
+        <div class="player-grid">
+            
+            <!-- Cột bên trái: Trình phát và Thảo luận -->
+            <div class="main-player-area">
+                
+                <!-- Video Player (Hiện tại đang nhúng tạm một video mẫu từ Youtube) -->
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                </div>
+
+                <!-- Thông tin chi tiết của phim -->
+                <div class="movie-info">
+                    <h1 class="movie-title">Tên Bộ Phim Của Bạn (Tập 1)</h1>
+                    <div class="movie-meta">Thể loại: Hoạt Hình, Phiêu Lưu • Thời lượng: 24 phút • Năm: 2026</div>
+                    <p class="movie-desc">Mô tả ngắn gọn hoặc tóm tắt nội dung của tập phim này để người xem dễ dàng theo dõi mạch truyện...</p>
+                </div>
+
+                <!-- Nơi nhúng khung cộng đồng thảo luận -->
+                <div class="comment-section">
+                    <div class="section-title"><i class="fa-regular fa-comments"></i> Cộng đồng Thảo luận</div>
+                    
+                    <!-- Khung Nhúng DISQUS/Facebook sẽ đặt ở đây -->
+                    <p style="color: var(--text-muted); font-size: 14px; margin: 0;">Khung bình luận và đăng bài của thành viên sẽ hiển thị tại đây.</p>
+                    
+                </div>
+            </div>
+
+            <!-- Cột bên phải: Chọn tập phim -->
+            <div class="sidebar-area">
+                <div class="sidebar-box">
+                    <div class="section-title"><i class="fa-solid fa-list"></i> Danh sách tập</div>
+                    <div class="episode-list">
+                        <a href="#" class="episode-btn active">1</a>
+                        <a href="#" class="episode-btn">2</a>
+                        <a href="#" class="episode-btn">3</a>
+                        <a href="#" class="episode-btn">4</a>
+                        <a href="#" class="episode-btn">5</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
