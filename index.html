@@ -274,6 +274,47 @@
 
         </div>
     </div>
+// --- LẮNG NGHE DANH SÁCH PHIM THỜI GIAN THỰC TỪ FIRESTORE ---
+        const viewMovies = document.getElementById('viewMovies');
+        const qMovies = query(collection(db, "movies"), orderBy("year", "desc"));
 
+        onSnapshot(qMovies, (snapshot) => {
+            if (snapshot.empty) {
+                viewMovies.innerHTML = `<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">Hiện chưa có phim nào được nhúng.</p>`;
+                return;
+            }
+
+            let movieHtml = "";
+            snapshot.forEach((doc) => {
+                const movie = doc.data();
+                
+                // Kiểm tra xem dữ liệu url có chứa thẻ iframe hay không để hiển thị cho đúng
+                let videoContent = "";
+                if (movie.url && movie.url.includes("<iframe")) {
+                    // Nếu là mã nhúng iframe, hiển thị trình phát video trực tiếp luôn
+                    videoContent = `<div class="movie-player" style="width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #000;">${movie.url}</div>`;
+                } else {
+                    // Nếu là link thường, hiển thị ảnh poster và nút bấm như cũ
+                    videoContent = `
+                        <img src="${movie.poster || 'https://via.placeholder.com/500x300'}" class="movie-poster" alt="${movie.title}">
+                        <div style="padding: 0 15px;"><a href="${movie.url || '#'}" target="_blank" class="btn-watch"><i class="fa-solid fa-play"></i> Xem Ngay</a></div>
+                    `;
+                }
+
+                movieHtml += `
+                    <div class="movie-card" style="grid-column: movie.url.includes('<iframe') ? 'span 2' : 'auto'; min-width: 240px;">
+                        ${videoContent}
+                        <div class="movie-info">
+                            <h3 class="movie-title">${movie.title || 'Chưa có tên'}</h3>
+                            <div class="movie-meta">Năm: ${movie.year || '----'} • Thời lượng: ${movie.duration || '0'} phút</div>
+                        </div>
+                    </div>
+                `;
+            });
+            viewMovies.innerHTML = movieHtml;
+        }, (error) => {
+            console.error("Lỗi khi tải dữ liệu phim:", error);
+            viewMovies.innerHTML = `<p style="text-align: center; color: #e53e3e; grid-column: 1/-1;">Không thể tải danh sách phim.</p>`;
+        });
 </body>
 </html>
