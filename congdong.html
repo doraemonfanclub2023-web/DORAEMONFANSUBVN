@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cộng đồng Giao lưu</title>
+    <title>Cộng đồng Giao lưu & Phim</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
 
@@ -26,6 +26,7 @@
             min-height: 100vh;
         }
 
+        /* HEADER & MENU THEO ĐỀ XUẤT MỚI */
         .header {
             display: flex;
             justify-content: space-between;
@@ -52,23 +53,31 @@
             padding: 8px 16px;
             border-radius: 8px;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .nav-item.active, .nav-item:hover { background: rgba(74, 144, 226, 0.1); color: var(--primary-color); }
+        /* Style kích hoạt màu xanh chủ đạo giống hình mẫu của bạn */
+        .nav-item.active { background: var(--primary-color); color: #fff; }
+        .nav-item:hover:not(.active) { background: rgba(74, 144, 226, 0.1); color: var(--primary-color); }
 
         .header-right { display: flex; align-items: center; gap: 20px; }
         .avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(74, 144, 226, 0.3); }
 
+        /* Bố cục vùng nội dung */
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 40px 20px;
+        }
+
+        /* CHẾ ĐỘ CỘNG ĐỒNG (LAYOUT 3 CỘT) */
+        .community-layout {
             display: grid;
             grid-template-columns: 220px 1fr 260px;
             gap: 30px;
         }
 
         @media (max-width: 900px) {
-            .container { grid-template-columns: 1fr; }
+            .community-layout { grid-template-columns: 1fr; }
             .sidebar-left, .sidebar-right { display: none; }
         }
 
@@ -151,7 +160,66 @@
 
         .user-badge { display: flex; align-items: center; gap: 12px; }
 
-        /* Nút đăng nhập Google */
+        /* CHẾ ĐỘ XEM PHIM (LAYOUT LƯỚI CARD) */
+        .movie-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .movie-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: #cbd5e0;
+        }
+
+        .movie-info {
+            padding: 15px;
+        }
+
+        .movie-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .btn-watch {
+            display: block;
+            text-align: center;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 8px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        /* Các nút Đăng nhập / Đăng xuất */
         .btn-google {
             background: #fff;
             color: #444;
@@ -177,51 +245,81 @@
             text-align: left;
             font-weight: 500;
         }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header class="header">
         <div class="header-left">
             <div class="logo">Workspace.</div>
             <nav class="nav-menu">
-                <a href="index.html" class="nav-item">Trang chủ</a>
-                <a href="#" class="nav-item active">Cộng đồng</a>
+                <div id="navCommunity" class="nav-item active">Cộng đồng</div>
+                <div id="navMovies" class="nav-item">Phim</div>
             </nav>
         </div>
         <div class="header-right" id="headerAuth">
-            <!-- Nút đăng nhập hoặc Avatar sẽ tự nạp vào đây bằng JS -->
-        </div>
+            </div>
     </header>
 
-    <!-- Thân trang -->
     <div class="container">
-        <aside class="sidebar-left">
-            <ul class="sidebar-menu">
-                <li><a href="#" class="sidebar-link active"><i class="fa-solid fa-rss"></i> Mới nhất</a></li>
-            </ul>
-        </aside>
+        
+        <div id="viewCommunity" class="community-layout">
+            <aside class="sidebar-left">
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="sidebar-link active"><i class="fa-solid fa-rss"></i> Mới nhất</a></li>
+                </ul>
+            </aside>
 
-        <main class="feed-container">
-            <!-- Khung tạo bài viết (Chỉ hiện khi đã đăng nhập) -->
-            <div id="authWriteBox">
-                <p style="text-align: center; color: var(--text-muted); background: var(--card-bg); padding: 20px; border-radius: 20px;">
-                    🔒 Vui lòng đăng nhập bằng Google để chia sẻ bài viết của bạn.
-                </p>
+            <main class="feed-container">
+                <div id="authWriteBox">
+                    <p style="text-align: center; color: var(--text-muted); background: var(--card-bg); padding: 20px; border-radius: 20px;">
+                        🔒 Vui lòng đăng nhập bằng Google để chia sẻ bài viết của bạn.
+                    </p>
+                </div>
+
+                <div id="newsfeed">
+                    <p style="text-align: center; color: var(--text-muted);">Đang tải bài viết...</p>
+                </div>
+            </main>
+
+            <aside class="sidebar-right" id="sidebarAuth">
+                </aside>
+        </div>
+
+        <div id="viewMovies" class="movie-layout hidden">
+            
+            <div class="movie-card">
+                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500" class="movie-poster" alt="Phim hoạt hình">
+                <div class="movie-info">
+                    <h3 class="movie-title">Nobita Và Vương Quốc Chó Mèo</h3>
+                    <div class="movie-meta">Năm: 2004 • Thời lượng: 84 phút</div>
+                    <a href="https://www.youtube.com/results?search_query=nobita+va+vuong+quoc+cho+meo" target="_blank" class="btn-watch"><i class="fa-solid fa-play"></i> Xem Ngay</a>
+                </div>
             </div>
 
-            <div id="newsfeed">
-                <p style="text-align: center; color: var(--text-muted);">Đang tải bài viết...</p>
+            <div class="movie-card">
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" class="movie-poster" alt="Phim hoạt hình">
+                <div class="movie-info">
+                    <h3 class="movie-title">Doraemon: Khủng Long Thân Yêu</h3>
+                    <div class="movie-meta">Năm: 2006 • Thời lượng: 107 phút</div>
+                    <a href="https://www.youtube.com/results?search_query=doraemon+khung+long+than+yeu" target="_blank" class="btn-watch"><i class="fa-solid fa-play"></i> Xem Ngay</a>
+                </div>
             </div>
-        </main>
 
-        <aside class="sidebar-right" id="sidebarAuth">
-            <!-- Thẻ thông tin thành viên sẽ tự nạp vào đây bằng JS -->
-        </aside>
+            <div class="movie-card">
+                <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500" class="movie-poster" alt="Phim hoạt hình">
+                <div class="movie-info">
+                    <h3 class="movie-title">Nobita Và Hành Tinh Muông Thú</h3>
+                    <div class="movie-meta">Năm: 1990 • Thời lượng: 100 phút</div>
+                    <a href="https://www.youtube.com/results?search_query=nobita+va+hanh+tinh+muong+thu" target="_blank" class="btn-watch"><i class="fa-solid fa-play"></i> Xem Ngay</a>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
-    <!-- TÍCH HỢP FIREBASE (AUTH & FIRESTORE) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -244,7 +342,28 @@
 
         let currentUser = null;
 
-        // 1. THEO DÕI TRẠNG THÁI ĐĂNG NHẬP ĐỂ THAY ĐỔI GIAO DIỆN
+        // --- XỬ LÝ CHUYỂN TAB MENU MƯỢT MÀ ---
+        const navCommunity = document.getElementById('navCommunity');
+        const navMovies = document.getElementById('navMovies');
+        const viewCommunity = document.getElementById('viewCommunity');
+        const viewMovies = document.getElementById('viewMovies');
+
+        navCommunity.addEventListener('click', () => {
+            navCommunity.classList.add('active');
+            navMovies.classList.remove('active');
+            viewCommunity.classList.remove('hidden');
+            viewMovies.classList.add('hidden');
+        });
+
+        navMovies.addEventListener('click', () => {
+            navMovies.classList.add('active');
+            navCommunity.classList.remove('active');
+            viewMovies.classList.remove('hidden');
+            viewCommunity.classList.add('hidden');
+        });
+
+
+        // --- FIREBASE AUTHENTICATION CONFIG ---
         onAuthStateChanged(auth, (user) => {
             const headerAuth = document.getElementById('headerAuth');
             const sidebarAuth = document.getElementById('sidebarAuth');
@@ -252,7 +371,6 @@
 
             if (user) {
                 currentUser = user;
-                // Nếu đã đăng nhập: Hiện avatar góc phải và mở khung viết bài
                 headerAuth.innerHTML = `<img src="${user.photoURL}" class="avatar" alt="${user.displayName}">`;
                 
                 sidebarAuth.innerHTML = `
@@ -270,18 +388,16 @@
 
                 authWriteBox.innerHTML = `
                     <div class="create-post-card clearfix">
-                        <textarea id="postInput" class="create-post-input" rows="3" placeholder="Chia sẻ suy nghĩ của bạn hôm nay nào, ${user.displayName}..."></textarea>
+                        <textarea id="postInput" class="create-post-input" rows="3" placeholder="Chia sẻ cảm nghĩ về bộ phim bạn vừa xem nào, ${user.displayName}..."></textarea>
                         <button id="submitPost" class="btn-submit"><i class="fa-solid fa-pen"></i> Đăng bài</button>
                     </div>
                 `;
 
-                // Gắn sự kiện nút Đăng xuất và Đăng bài mới nạp vào DOM
                 document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
                 document.getElementById('submitPost').addEventListener('click', dangBai);
 
             } else {
                 currentUser = null;
-                // Nếu chưa đăng nhập: Hiện nút Đăng nhập Google
                 headerAuth.innerHTML = `<button id="btnLogin" class="btn-google"><i class="fa-brands fa-google" style="color: #ea4335;"></i> Đăng nhập</button>`;
                 sidebarAuth.innerHTML = '';
                 authWriteBox.innerHTML = `
@@ -291,63 +407,4 @@
                 `;
 
                 document.getElementById('btnLogin').addEventListener('click', () => {
-                    signInWithPopup(auth, provider).catch(err => alert("Lỗi đăng nhập: " + err.message));
-                });
-            }
-        });
-
-        // 2. LẮNG NGHE DỮ LIỆU BÀI VIẾT REALTIME TỪ FIREBASE
-        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-        onSnapshot(q, (snapshot) => {
-            const newsfeed = document.getElementById('newsfeed');
-            newsfeed.innerHTML = '';
-            
-            if (snapshot.empty) {
-                newsfeed.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Chưa có bài viết nào cả.</p>';
-                return;
-            }
-
-            snapshot.forEach((doc) => {
-                const post = doc.data();
-                let timeDisplay = "Vừa xong";
-                if(post.createdAt) {
-                    const date = post.createdAt.toDate();
-                    timeDisplay = date.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'}) + " - " + date.toLocaleDateString('vi-VN');
-                }
-
-                newsfeed.innerHTML += `
-                    <div class="post-card">
-                        <div class="post-header">
-                            <img src="${post.avatar}" class="avatar" alt="User">
-                            <div class="author-info">
-                                <span class="author-name">${post.name}</span>
-                                <span class="post-time">${timeDisplay}</span>
-                            </div>
-                        </div>
-                        <div class="post-content">${post.content}</div>
-                    </div>
-                `;
-            });
-        });
-
-        // 3. HÀM XỬ LÝ ĐĂNG BÀI (Sử dụng thông tin người dùng thật từ Google)
-        async function dangBai() {
-            const postInput = document.getElementById('postInput');
-            const content = postInput.value.trim();
-            if (content === '' || !currentUser) return;
-
-            try {
-                await addDoc(collection(db, "posts"), {
-                    name: currentUser.displayName,
-                    avatar: currentUser.photoURL,
-                    content: content,
-                    createdAt: new Date()
-                });
-                postInput.value = '';
-            } catch (error) {
-                alert("Lỗi khi gửi bài: " + error.message);
-            }
-        }
-    </script>
-</body>
-</html>
+                    signInWithPopup(auth, provider
