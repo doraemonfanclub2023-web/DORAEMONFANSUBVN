@@ -1,460 +1,22 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Fansub - Xem Phim Realtime</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
-
-    <style>
-        :root {
-            --bg-color: #0c0d10;
-            --card-bg: #16171d;
-            --text-main: #ffffff;
-            --text-muted: #717686;
-            --primary-color: #5468ff; 
-            --accent-color: #00e676;
-            --border-color: #222531;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            color: var(--text-main);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header chuyên nghiệp */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 25px;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo span {
-            color: var(--primary-color);
-        }
-
-        .btn-nav {
-            background: #1b1d26;
-            border: 1px solid var(--border-color);
-            color: #fff;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .btn-nav:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        /* Ẩn hiện các View điều hướng */
-        .page-view {
-            display: none;
-        }
-        
-        .page-view.active {
-            display: block;
-        }
-
-        /* SLIDER TIÊU ĐIỂM (FEATURED CAROUSEL) */
-        .featured-section {
-            margin-bottom: 35px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .carousel-container {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            scroll-behavior: smooth;
-        }
-
-        .carousel-container::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .carousel-container::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 10px;
-        }
-
-        .carousel-item {
-            flex: 0 0 160px;
-            aspect-ratio: 2/3;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s;
-        }
-
-        .carousel-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* DANH SÁCH LƯỚI PHIM (GRID VIEW) */
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-        }
-
-        .movie-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid var(--border-color);
-        }
-
-        .movie-card:hover {
-            transform: translateY(-4px);
-            border-color: #3e4459;
-        }
-
-        .poster-wrapper {
-            width: 100%;
-            aspect-ratio: 16/10;
-            background: #1b1d26;
-            position: relative;
-        }
-
-        .poster-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .episode-badge {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(4px);
-            color: #fff;
-            padding: 3px 8px;
-            font-size: 11px;
-            font-weight: 600;
-            border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .movie-card-info {
-            padding: 12px;
-        }
-
-        .movie-card-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* GIAO DIỆN XEM PHIM TÍNH HỢP */
-        .watch-layout {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 25px;
-        }
-
-        @media (max-width: 1000px) {
-            .watch-layout { grid-template-columns: 1fr; }
-        }
-
-        .video-player-container {
-            background: #000;
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid var(--border-color);
-        }
-
-        .video-player-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .video-details {
-            margin-top: 20px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-        }
-
-        .video-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-        }
-
-        /* Sidebar bên phải đa năng (Tab Chat & Tập phim) */
-        .watch-sidebar {
-            background: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            height: 600px;
-        }
-
-        .sidebar-tabs {
-            display: flex;
-            background: #1b1d26;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 15px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .tab-btn.active {
-            color: #fff;
-            border-bottom: 2px solid var(--primary-color);
-            background: var(--card-bg);
-        }
-
-        .tab-content {
-            flex-grow: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Danh sách tập nhanh chân thực */
-        .quick-ep-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .quick-ep-btn {
-            background: #1b1d26;
-            border: 1px solid var(--border-color);
-            color: #fff;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .quick-ep-btn:hover, .quick-ep-btn.active {
-            border-color: var(--primary-color);
-            background: rgba(84, 104, 255, 0.1);
-        }
-
-        /* Khung chat thời gian thực */
-        .chat-item {
-            background: #1b1d26;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 13px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .chat-user {
-            font-weight: 700;
-            color: #ffb74d;
-            margin-bottom: 4px;
-        }
-
-        /* Hiệu ứng Skeleton chờ dữ liệu */
-        .skeleton {
-            background: linear-gradient(90deg, #16171d 25%, #222531 50%, #16171d 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <!-- Header chuẩn Mon Fansub -->
-        <header class="header">
-            <div class="logo-area">
-                <a href="#" class="logo">mon<span>FANSUB</span></a>
-                <button class="btn-nav" id="btn-coconut">
-                    <i class="fa-solid fa-folder-open"></i> Coconut
-                </button>
-            </div>
-            <div class="user-profile">
-                <button class="btn-nav" style="padding: 8px 12px;"><i class="fa-solid fa-user"></i></button>
-            </div>
-        </header>
-
-        <!-- VIEW 1: TRANG CHỦ TỔNG HỢP -->
-        <main id="view-home" class="page-view active">
-            <!-- Băng chuyền tiêu điểm phía trên -->
-            <section class="featured-section">
-                <div class="section-title"><i class="fa-solid fa-star" style="color: #ffd700;"></i> Tiêu điểm Hoạt hình</div>
-                <div id="featured-carousel" class="carousel-container">
-                    <div class="carousel-item skeleton"></div>
-                    <div class="carousel-item skeleton"></div>
-                    <div class="carousel-item skeleton"></div>
-                    <div class="carousel-item skeleton"></div>
-                </div>
-            </section>
-
-            <!-- Lưới danh sách tập phim phía dưới -->
-            <section>
-                <div class="section-title"><i class="fa-solid fa-list"></i> Doraemon TV Series</div>
-                <div id="movie-grid-list" class="movie-grid">
-                    <div class="movie-card skeleton" style="height: 180px;"></div>
-                    <div class="movie-card skeleton" style="height: 180px;"></div>
-                    <div class="movie-card skeleton" style="height: 180px;"></div>
-                    <div class="movie-card skeleton" style="height: 180px;"></div>
-                </div>
-            </section>
-        </main>
-
-        <!-- VIEW 2: TRANG PHÁT VIDEO ĐỒNG BỘ TẠI CHỖ -->
-        <main id="view-watch" class="page-view">
-            <div class="watch-layout">
-                <!-- Cột trái: Khung phát video nhúng -->
-                <div class="left-content">
-                    <div class="video-player-container" id="player-zone"></div>
-                    <div class="video-details">
-                        <h1 class="video-title" id="watch-title">Đang tải tên tập...</h1>
-                        <p style="color: var(--text-muted); font-size: 13px;" id="watch-meta"></p>
-                    </div>
-                </div>
-
-                <!-- Cột phải: Sidebar chia Tab tiện ích -->
-                <div class="watch-sidebar">
-                    <div class="sidebar-tabs">
-                        <button class="tab-btn active" data-tab="tab-chat"><i class="fa-solid fa-comments"></i> Trực tuyến</button>
-                        <button class="tab-btn" data-tab="tab-episodes"><i class="fa-solid fa-bars-staggered"></i> Danh sách tập</button>
-                    </div>
-
-                    <!-- Nội dung Tab Chat -->
-                    <div id="tab-chat" class="tab-content active">
-                        <div class="chat-item">
-                            <div class="chat-user">Minh Nguyễn</div>
-                            <div>Cày lại từ tập này thấy kỷ niệm ùa về quá nhóm ơi! 🥰</div>
-                        </div>
-                        <div class="chat-item">
-                            <div class="chat-user">Phương Phương</div>
-                            <div>Giao diện xem mượt mà hẳn luôn á, chất lượng lắm!</div>
-                        </div>
-                    </div>
-
-                    <!-- Nội dung Tab Chọn Tập Nhanh -->
-                    <div id="tab-episodes" class="tab-content">
-                        <div id="quick-episodes" class="quick-ep-grid"></div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- CODE XỬ LÝ SỰ KIỆN & REALTIME FIREBASE -->
-    <script type="module">
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"; // Thêm dòng này để bổ sung quyền kết nối ẩn danh
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-       // Thay thế đoạn này bằng config thật của bạn lấy từ cài đặt dự án Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSy...", // Đảm bảo toàn bộ chuỗi apiKey thật không chứa dấu ba chấm thừa
-    authDomain: "giao-luu-fandom.firebaseapp.com",
-    projectId: "giao-luu-fandom",
-    storageBucket: "giao-luu-fandom.appspot.com",
-    messagingSenderId: "...", // Điền chuỗi số ID của bạn
-    appId: "..." // Điền chuỗi App ID của bạn
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSy...", 
+            authDomain: "giao-luu-fandom.firebaseapp.com",
+            projectId: "giao-luu-fandom",
+            storageBucket: "giao-luu-fandom.appspot.com",
+            messagingSenderId: "...", 
+            appId: "..." 
+        };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-// Kích hoạt kết nối ẩn danh để đảm bảo Firestore nhận diện được phiên kết nối hợp lệ
-signInAnonymously(auth).catch((error) => {
-    console.error("Lỗi xác thực ẩn danh: ", error);
-});
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        signInAnonymously(auth).catch((error) => console.error(error));
 
         const viewHome = document.getElementById('view-home');
         const viewWatch = document.getElementById('view-watch');
@@ -464,152 +26,53 @@ signInAnonymously(auth).catch((error) => {
         const btnCoconut = document.getElementById('btn-coconut');
 
         let localMoviesCache = {};
-        let moviesOrderArray = [];
 
-        // 1. ĐỒNG BỘ DỮ LIỆU PHIM REALTIME
         const qMovies = query(collection(db, "movies"), orderBy("year", "desc"));
         onSnapshot(qMovies, (snapshot) => {
-            let gridHtml = "";
-            let carouselHtml = "";
-            let quickEpHtml = "";
-            
+            let gridHtml = "", carouselHtml = "", quickEpHtml = "";
             localMoviesCache = {};
-            moviesOrderArray = [];
 
-            snapshot.forEach((documentData) => {
-                const id = documentData.id;
-                const movie = documentData.data();
-                localMoviesCache[id] = movie;
-                moviesOrderArray.push({ id, ...movie });
+            snapshot.forEach((doc) => {
+                const movie = doc.data();
+                localMoviesCache[doc.id] = movie;
 
-                // Render lưới danh sách phim chính
-                gridHtml += `
-                    <div class="movie-card" data-movie-id="${id}">
-                        <div class="poster-wrapper">
-                            <img src="${movie.poster || 'https://via.placeholder.com/300x180'}" alt="${movie.title}">
-                            <div class="episode-badge">Tập ${movie.duration || 'New'}</div>
-                        </div>
-                        <div class="movie-card-info">
-                            <h4 class="movie-card-title">${movie.title || 'Tập phim mới'}</h4>
-                        </div>
+                gridHtml += `<div class="movie-card" data-movie-id="${doc.id}">
+                    <div class="poster-wrapper">
+                        <img src="${movie.poster || 'https://via.placeholder.com/300x180'}">
+                        <div class="episode-badge">Tập ${movie.duration || 'New'}</div>
                     </div>
-                `;
+                    <div class="movie-card-info"><h4 class="movie-card-title">${movie.title}</h4></div>
+                </div>`;
 
-                // Render thanh tiêu điểm nằm ngang phía trên
-                carouselHtml += `
-                    <div class="carousel-item" data-movie-id="${id}">
-                        <img src="${movie.poster || 'https://via.placeholder.com/160x240'}" alt="${movie.title}">
-                    </div>
-                `;
-
-                // Render nút danh sách tập nhanh ở cột Sidebar xem phim
-                quickEpHtml += `
-                    <button class="quick-ep-btn" data-movie-id="${id}" title="${movie.title}">
-                        Tập ${movie.duration || 'N/A'}: ${movie.title || 'Chưa có tên'}
-                    </button>
-                `;
+                carouselHtml += `<div class="carousel-item" data-movie-id="${doc.id}"><img src="${movie.poster}"></div>`;
+                quickEpHtml += `<button class="quick-ep-btn" data-movie-id="${doc.id}">Tập ${movie.duration}: ${movie.title}</button>`;
             });
 
-            movieGridList.innerHTML = gridHtml || `<p style="color:var(--text-muted)">Không tìm thấy phim nào.</p>`;
-            featuredCarousel.innerHTML = carouselHtml || `<p style="color:var(--text-muted)">Trống.</p>`;
+            movieGridList.innerHTML = gridHtml;
+            featuredCarousel.innerHTML = carouselHtml;
             quickEpisodes.innerHTML = quickEpHtml;
 
-            // Đăng ký sự kiện click chuyển tập cho toàn bộ các phần tử tương ứng
-            bindClickEvents();
+            document.querySelectorAll('[data-movie-id]').forEach(el => {
+                el.addEventListener('click', () => switchPageToWatch(el.getAttribute('data-movie-id')));
+            });
         });
 
-        function bindClickEvents() {
-            document.querySelectorAll('[data-movie-id]').forEach(element => {
-                element.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const movieId = element.getAttribute('data-movie-id');
-                    switchPageToWatch(movieId);
-                });
-            });
-        }
+        function switchPageToWatch(id) {
+            const movie = localMoviesCache[id];
+            if (!movie) return;
 
-        // 2. HÀM CHUYỂN TRANG/ĐỔI TẬP TẠI CHỖ KHÔNG LOAD LẠI TRANG
-function switchPageToWatch(id) {
-    const movie = localMoviesCache[id];
-    if (!movie) return;
+            document.getElementById('player-zone').innerHTML = movie.url || "Link lỗi";
+            document.getElementById('watch-title').innerText = movie.title;
+            document.getElementById('watch-meta').innerText = `Năm: ${movie.year} • Tập: ${movie.duration}`;
 
-    const playerZone = document.getElementById('player-zone');
-    
-    // ---- SỬA CHỖ NÀY ĐỂ NHÚNG PHIM TRỰC TIẾP TRONG CODE ----
-    if (id === "ID_CỦA_TẬP_PHIM_MUỐN_CHÈN") { 
-        // Cách A: Nhúng bằng cả đoạn mã iframe
-        playerZone.innerHTML = `<iframe src="https://link-phim-cua-ban.com/embed" allowfullscreen></iframe>`;
-    } 
-    else if (movie.url && movie.url.includes('<iframe')) {
-        // Mặc định: Lấy mã iframe từ cơ sở dữ liệu Firebase nếu có
-        playerZone.innerHTML = movie.url; 
-    } 
-    else {
-        // Cách B: Nhúng một link xem phim chung/dự phòng cho tất cả các tập chưa có link trên Firebase
-        playerZone.innerHTML = `<iframe src="https://link-phim-du-phong.com/embed" allowfullscreen></iframe>`;
-    }
-    // --------------------------------------------------------
-    
-    document.getElementById('watch-title').innerText = movie.title || "Tập phim chưa có tên";
-    document.getElementById('watch-meta').innerText = `Năm: ${movie.year || '2026'} • Thời lượng: ${movie.duration || '0'} phút • Nhóm dịch: Mon Fansub`;
-
-    document.querySelectorAll('.quick-ep-btn').forEach(btn => {
-        if(btn.getAttribute('data-movie-id') === id) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-
-    viewHome.classList.remove('active');
-    viewWatch.classList.add('active');
-    window.location.hash = `watch?id=${id}`;
-}
-
-            // Active nút tập đang chọn trong danh sách sidebar
-            document.querySelectorAll('.quick-ep-btn').forEach(btn => {
-                if(btn.getAttribute('data-movie-id') === id) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
-            // Ẩn trang chủ, hiện giao diện phát video ngay lập tức
             viewHome.classList.remove('active');
             viewWatch.classList.add('active');
             window.location.hash = `watch?id=${id}`;
         }
 
-        // Quay lại trang tổng hợp bằng nút Coconut
         btnCoconut.addEventListener('click', () => {
-            document.getElementById('player-zone').innerHTML = ""; 
             viewWatch.classList.remove('active');
             viewHome.classList.add('active');
             window.location.hash = "";
         });
-
-        // 3. XỬ LÝ TƯƠNG TÁC CHUYỂN TAB TRÊN SIDEBAR
-        document.querySelectorAll('.tab-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const targetTab = button.getAttribute('data-tab');
-                
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-                button.classList.add('active');
-                document.getElementById(targetTab).classList.add('active');
-            });
-        });
-
-        // Tự động nhận diện ID tập từ đường dẫn Hash khi load trang trực tiếp
-        window.addEventListener('load', () => {
-            const hash = window.location.hash;
-            if (hash.startsWith('#watch?id=')) {
-                const id = hash.split('=')[1];
-                setTimeout(() => { switchPageToWatch(id); }, 1000);
-            }
-        });
     </script>
-</body>
-</html>
