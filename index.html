@@ -4,11 +4,31 @@
     <meta charset="UTF-8">
     <title>Doraemon Fansub</title>
     <style>
-        .active { display: block !important; }
-        #view-home, #view-watch { display: none; }
+        /* Tối ưu hóa lưới hiển thị phim */
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        /* Hiệu ứng cho mỗi card phim */
+        .movie-card {
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .movie-card img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
-<body>
 
     <!-- Giao diện Home -->
     <div id="view-home" class="active">
