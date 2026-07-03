@@ -434,15 +434,15 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Cấu hình Firebase đồng bộ hệ thống của bạn
-        const firebaseConfig = {
-            apiKey: "AIzaSy...",
-            authDomain: "giao-luu-fandom.firebaseapp.com",
-            projectId: "giao-luu-fandom",
-            storageBucket: "giao-luu-fandom.appspot.com",
-            messagingSenderId: "...",
-            appId: "..."
-        };
+       // Thay thế đoạn này bằng config thật của bạn lấy từ cài đặt dự án Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyChinhXacCuaBanVaoDay...", 
+    authDomain: "giao-luu-fandom.firebaseapp.com",
+    projectId: "giao-luu-fandom",
+    storageBucket: "giao-luu-fandom.appspot.com",
+    messagingSenderId: "123456789012", // Điền số thật
+    appId: "1:123456789012:web:abcdef123456" // Điền ID thật
+};
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
