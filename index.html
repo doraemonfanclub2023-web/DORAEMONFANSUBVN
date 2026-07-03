@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Doraemon Fansub</title>
     <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+        .active { display: block !important; }
+        #view-home, #view-watch { display: none; }
+
         /* Tối ưu hóa lưới hiển thị phim */
         .movie-grid {
             display: grid;
@@ -12,46 +16,43 @@
             padding: 20px;
         }
         
-        /* Hiệu ứng cho mỗi card phim */
         .movie-card {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
             transition: transform 0.3s ease;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
-        .movie-card:hover {
-            transform: scale(1.05);
-        }
-        
-        .movie-card img {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
+        .movie-card:hover { transform: scale(1.05); }
+        .movie-card img { width: 100%; height: 220px; object-fit: cover; border-radius: 5px; }
+        .movie-card h4 { margin: 10px 0 0 0; font-size: 14px; text-align: center; }
     </style>
 </head>
+<body>
 
     <!-- Giao diện Home -->
     <div id="view-home" class="active">
         <div id="featured-carousel"></div>
-        <div id="movie-grid-list"></div>
+        <!-- ĐÃ THÊM CLASS movie-grid VÀO ĐÂY -->
+        <div id="movie-grid-list" class="movie-grid"></div>
         <div id="quick-episodes"></div>
     </div>
 
     <!-- Giao diện Xem phim -->
     <div id="view-watch">
-        <button id="btn-coconut">Quay lại</button>
-        <h1 id="watch-title"></h1>
-        <p id="watch-meta"></p>
-        <div id="player-zone"></div>
+        <button id="btn-coconut" style="margin: 20px;">Quay lại</button>
+        <h1 id="watch-title" style="margin: 20px;"></h1>
+        <p id="watch-meta" style="margin: 20px;"></p>
+        <div id="player-zone" style="padding: 20px;"></div>
     </div>
 
-    <!-- Đoạn code JS hoàn chỉnh -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // BẠN HÃY ĐIỀN ĐẦY ĐỦ THÔNG TIN TẠI ĐÂY
         const firebaseConfig = {
             apiKey: "AIzaSyD8J4FX3qSFlCgYEPXaBGC9Lf6yhCHt9OY", 
             authDomain: "giao-luu-fandom.firebaseapp.com",
@@ -65,56 +66,42 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        signInAnonymously(auth).catch((error) => console.error("Lỗi đăng nhập:", error));
+        signInAnonymously(auth).catch(console.error);
 
         const viewHome = document.getElementById('view-home');
         const viewWatch = document.getElementById('view-watch');
         const movieGridList = document.getElementById('movie-grid-list');
-        const featuredCarousel = document.getElementById('featured-carousel');
-        const quickEpisodes = document.getElementById('quick-episodes');
-        const btnCoconut = document.getElementById('btn-coconut');
 
         let localMoviesCache = {};
 
         const qMovies = query(collection(db, "movies"), orderBy("year", "desc"));
         onSnapshot(qMovies, (snapshot) => {
-            let gridHtml = "", carouselHtml = "", quickEpHtml = "";
-            localMoviesCache = {};
-
+            let gridHtml = "";
             snapshot.forEach((doc) => {
                 const movie = doc.data();
                 localMoviesCache[doc.id] = movie;
-
                 gridHtml += `<div class="movie-card" data-movie-id="${doc.id}">
                     <img src="${movie.poster || 'https://via.placeholder.com/300x180'}">
                     <h4>${movie.title}</h4>
                 </div>`;
-                carouselHtml += `<div class="carousel-item" data-movie-id="${doc.id}"><img src="${movie.poster}"></div>`;
-                quickEpHtml += `<button class="quick-ep-btn" data-movie-id="${doc.id}">Tập ${movie.duration}</button>`;
             });
-
             movieGridList.innerHTML = gridHtml;
-            featuredCarousel.innerHTML = carouselHtml;
-            quickEpisodes.innerHTML = quickEpHtml;
-
-            document.querySelectorAll('[data-movie-id]').forEach(el => {
-                el.addEventListener('click', () => switchPageToWatch(el.getAttribute('data-movie-id')));
-            });
         });
 
-        function switchPageToWatch(id) {
-            const movie = localMoviesCache[id];
-            if (!movie) return;
+        // Xử lý click
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.movie-card');
+            if (card) {
+                const id = card.getAttribute('data-movie-id');
+                const movie = localMoviesCache[id];
+                document.getElementById('player-zone').innerHTML = movie.url || "Link lỗi";
+                document.getElementById('watch-title').innerText = movie.title;
+                viewHome.classList.remove('active');
+                viewWatch.classList.add('active');
+            }
+        });
 
-            document.getElementById('player-zone').innerHTML = movie.url || "Link lỗi";
-            document.getElementById('watch-title').innerText = movie.title;
-            document.getElementById('watch-meta').innerText = `Năm: ${movie.year} • Tập: ${movie.duration}`;
-
-            viewHome.classList.remove('active');
-            viewWatch.classList.add('active');
-        }
-
-        btnCoconut.addEventListener('click', () => {
+        document.getElementById('btn-coconut').addEventListener('click', () => {
             viewWatch.classList.remove('active');
             viewHome.classList.add('active');
         });
