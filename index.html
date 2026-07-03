@@ -432,18 +432,27 @@
     <!-- CODE XỬ LÝ SỰ KIỆN & REALTIME FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"; // Thêm dòng này để bổ sung quyền kết nối ẩn danh
 
        // Thay thế đoạn này bằng config thật của bạn lấy từ cài đặt dự án Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyChinhXacCuaBanVaoDay...", 
+    apiKey: "AIzaSy...", // Đảm bảo toàn bộ chuỗi apiKey thật không chứa dấu ba chấm thừa
     authDomain: "giao-luu-fandom.firebaseapp.com",
     projectId: "giao-luu-fandom",
     storageBucket: "giao-luu-fandom.appspot.com",
-    messagingSenderId: "123456789012", // Điền số thật
-    appId: "1:123456789012:web:abcdef123456" // Điền ID thật
+    messagingSenderId: "...", // Điền chuỗi số ID của bạn
+    appId: "..." // Điền chuỗi App ID của bạn
 };
 
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Kích hoạt kết nối ẩn danh để đảm bảo Firestore nhận diện được phiên kết nối hợp lệ
+signInAnonymously(auth).catch((error) => {
+    console.error("Lỗi xác thực ẩn danh: ", error);
+});
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
