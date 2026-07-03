@@ -3,153 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cộng đồng MonFansub</title>
+    <title>Cộng đồng Giao lưu</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
 
     <style>
+        /* Đồng bộ biến màu với trang index.html */
         :root {
-            --bg-color: #0b0c0d;
-            --card-bg: #151618;
-            --border-color: #242528;
-            --text-main: #f5f6f7;
-            --text-muted: #9ca3af;
-            --primary-color: #10b981; /* Màu xanh lá cây giống nút Tạo bài viết của bạn */
-            --primary-hover: #059669;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --primary-color: #4a90e2;
+            --border-color: rgba(255, 255, 255, 0.6);
         }
 
         body {
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
             color: var(--text-main);
+            min-height: 100vh;
         }
 
-        /* Header giống ảnh mẫu */
+        /* Header hiệu ứng kính mờ kính giống index.html */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 40px;
+            padding: 15px 40px;
             background: var(--card-bg);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
         }
 
         .logo {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            letter-spacing: -0.5px;
+            color: var(--primary-color);
         }
 
         .nav-menu {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
         .nav-item {
-            color: var(--text-muted);
+            color: var(--text-main);
             text-decoration: none;
-            font-size: 14px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
         .nav-item.active, .nav-item:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--primary-color);
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .avatar {
-            width: 32px;
-            height: 32px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--border-color);
+            border: 2px solid rgba(74, 144, 226, 0.3);
         }
 
-        /* Layout chia 3 cột chính */
+        /* Layout Container */
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 24px 20px;
+            padding: 40px 20px;
             display: grid;
-            grid-template-columns: 240px 1fr 300px;
-            gap: 25px;
+            grid-template-columns: 220px 1fr 260px;
+            gap: 30px;
         }
 
         @media (max-width: 900px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
+            .container { grid-template-columns: 1fr; }
             .sidebar-left, .sidebar-right { display: none; }
         }
 
-        /* Menu trái */
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
+        /* Menu Sidebar trái */
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        
         .sidebar-link {
             display: flex;
             align-items: center;
             gap: 12px;
-            color: var(--text-muted);
+            color: var(--text-main);
             text-decoration: none;
             padding: 12px 16px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
-            margin-bottom: 4px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            transition: all 0.2s;
         }
 
         .sidebar-link.active, .sidebar-link:hover {
-            color: #fff;
             background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
         }
 
-        /* Khung tạo bài viết */
+        /* Khu vực dòng thời gian */
         .feed-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
         }
 
+        /* Khung tạo bài viết Glassmorphism */
         .create-post-card {
             background: var(--card-bg);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
 
         .create-post-input {
             width: 100%;
             background: transparent;
             border: none;
-            color: #fff;
+            color: var(--text-main);
             font-size: 15px;
             resize: none;
             outline: none;
@@ -161,31 +164,35 @@
             background: var(--primary-color);
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 10px 22px;
+            border-radius: 8px;
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
             float: right;
-            transition: background 0.2s;
+            transition: opacity 0.2s, transform 0.2s;
         }
 
         .btn-submit:hover {
-            background: var(--primary-hover);
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
 
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
+        .clearfix::after { content: ""; clear: both; display: table; }
 
-        /* Card bài viết trên Feed */
+        /* Card hiển thị bài viết mềm mại */
         .post-card {
             background: var(--card-bg);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-3px);
         }
 
         .post-header {
@@ -195,40 +202,30 @@
             margin-bottom: 15px;
         }
 
-        .author-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .author-name {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .post-time {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
+        .author-info { display: flex; flex-direction: column; }
+        
+        .author-name { font-weight: 700; font-size: 14px; color: var(--text-main); }
+        
+        .post-time { font-size: 12px; color: var(--text-muted); }
 
         .post-content {
             font-size: 15px;
-            line-height: 1.5;
+            line-height: 1.6;
+            color: var(--text-main);
             word-wrap: break-word;
         }
 
-        /* Sidebar phải */
+        /* Sidebar bên phải */
         .widget {
             background: var(--card-bg);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 20px;
             padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
 
-        .user-badge {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .user-badge { display: flex; align-items: center; gap: 12px; }
     </style>
 </head>
 <body>
@@ -236,22 +233,24 @@
     <!-- Header -->
     <header class="header">
         <div class="header-left">
-            <div class="logo"><i class="fa-solid fa-cat" style="color: #3b82f6;"></i> Doraemon Fansub Việt Nam 🇻🇳</div>
+            <!-- Thay tên logo ở đây nếu muốn -->
+            <div class="logo">Workspace.</div>
             <nav class="nav-menu">
                 <a href="index.html" class="nav-item">Trang chủ</a>
                 <a href="#" class="nav-item active">Cộng đồng</a>
             </nav>
         </div>
         <div class="header-right">
-            <i class="fa-regular fa-bell" style="font-size: 18px; cursor: pointer;"></i>
-            <img src="https://i.pravatar.cc/100?img=33" class="avatar" alt="User">
+            <i class="fa-regular fa-bell" style="font-size: 18px; cursor: pointer; color: var(--text-main);"></i>
+            <!-- Đổi link ảnh avatar thật của bạn vào đây nếu muốn -->
+            <img src="https://i.pravatar.cc/100?img=60" class="avatar" alt="User">
         </div>
     </header>
 
     <!-- Thân trang -->
     <div class="container">
         
-        <!-- Cột trái: Menu điều hướng -->
+        <!-- Cột trái: Menu điều hướng nhanh -->
         <aside class="sidebar-left">
             <ul class="sidebar-menu">
                 <li><a href="#" class="sidebar-link active"><i class="fa-solid fa-rss"></i> Mới nhất</a></li>
@@ -259,26 +258,24 @@
             </ul>
         </aside>
 
-        <!-- Cột giữa: Khung đăng bài & Dòng thời gian -->
+        <!-- Cột giữa: Feed bài viết -->
         <main class="feed-container">
-            <!-- Khung tạo bài viết nhanh -->
             <div class="create-post-card clearfix">
-                <textarea id="postInput" class="create-post-input" rows="3" placeholder="Chia sẻ suy nghĩ của bạn với các Mon-fan hôm nay nào..."></textarea>
-                <button id="submitPost" class="btn-submit"><i class="fa-solid fa-pen"></i> Tạo bài viết</button>
+                <textarea id="postInput" class="create-post-input" rows="3" placeholder="Chia sẻ suy nghĩ của bạn hôm nay nào..."></textarea>
+                <button id="submitPost" class="btn-submit"><i class="fa-solid fa-pen"></i> Đăng bài</button>
             </div>
 
-            <!-- Nơi chứa danh sách bài viết -->
             <div id="newsfeed"></div>
         </main>
 
-        <!-- Cột phải: Thông tin cá nhân thu nhỏ -->
+        <!-- Cột phải: Profile Widget -->
         <aside class="sidebar-right">
             <div class="widget">
                 <div class="user-badge">
-                    <img src="https://i.pravatar.cc/100?img=33" class="avatar" style="width: 40px; height: 40px;" alt="User">
+                    <img src="https://i.pravatar.cc/100?img=60" class="avatar" style="width: 40px; height: 40px;" alt="User">
                     <div class="author-info">
                         <span class="author-name">nguy?n tu?n kh?i</span>
-                        <span class="post-time" style="color: #10b981;">Thành viên</span>
+                        <span class="post-time" style="color: var(--primary-color); font-weight: 500;">Thành viên</span>
                     </div>
                 </div>
             </div>
@@ -286,17 +283,14 @@
 
     </div>
 
-    <!-- Logic JavaScript xử lý đăng và lưu bài viết tạm thời -->
     <script>
         const postInput = document.getElementById('postInput');
         const submitPost = document.getElementById('submitPost');
         const newsfeed = document.getElementById('newsfeed');
 
-        // Hàm tải dữ liệu bài viết từ LocalStorage lên màn hình
         function loadPosts() {
             newsfeed.innerHTML = '';
-            // Lấy danh sách bài viết từ bộ nhớ trình duyệt, nếu chưa có thì để mảng rỗng
-            const posts = JSON.parse(localStorage.getItem('monfansub_posts')) || [
+            const posts = JSON.parse(localStorage.getItem('workspace_posts')) || [
                 {
                     name: "sangg_",
                     avatar: "https://i.pravatar.cc/100?img=12",
@@ -306,8 +300,8 @@
             ];
 
             posts.forEach(post => {
-                const postHTML = `
-                    <div class="post-card" style="margin-bottom: 15px;">
+                newsfeed.innerHTML += `
+                    <div class="post-card">
                         <div class="post-header">
                             <img src="${post.avatar}" class="avatar" alt="User">
                             <div class="author-info">
@@ -318,19 +312,14 @@
                         <div class="post-content">${post.content}</div>
                     </div>
                 `;
-                newsfeed.innerHTML += postHTML;
             });
         }
 
-        // Xử lý khi nhấn nút "Tạo bài viết"
         submitPost.addEventListener('click', () => {
             const content = postInput.value.trim();
-            if (content === '') {
-                alert('Vui lòng nhập nội dung bài viết!');
-                return;
-            }
+            if (content === '') return;
 
-            const currentPosts = JSON.parse(localStorage.getItem('monfansub_posts')) || [
+            const currentPosts = JSON.parse(localStorage.getItem('workspace_posts')) || [
                 {
                     name: "sangg_",
                     avatar: "https://i.pravatar.cc/100?img=12",
@@ -339,23 +328,18 @@
                 }
             ];
 
-            // Thêm bài viết mới lên đầu mảng
             currentPosts.unshift({
                 name: "nguy?n tu?n kh?i",
-                avatar: "https://i.pravatar.cc/100?img=33",
+                avatar: "https://i.pravatar.cc/100?img=60",
                 time: "Vừa xong",
                 content: content
             });
 
-            // Lưu mảng mới vào LocalStorage
-            localStorage.setItem('monfansub_posts', JSON.stringify(currentPosts));
-
-            // Reset khung nhập và làm mới danh sách hiển thị
+            localStorage.setItem('workspace_posts', JSON.stringify(currentPosts));
             postInput.value = '';
             loadPosts();
         });
 
-        // Chạy tải bài viết lần đầu khi mở trang
         loadPosts();
     </script>
 </body>
